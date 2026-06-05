@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/itemCobrar" android:title="Cobrar"></item>
+    <item android:id="@+id/itemAtender" android:title="Vender"></item>
+    <item android:id="@+id/itemMotivo" android:title="Motivo de no atención"></item>
+    <item android:id="@+id/itemDatosClientes" android:title="Datos del cliente"></item>
+    <item android:id="@+id/itemPedidos" android:title="Movimientos"></item>
+    <item android:id="@+id/itemDevoluciones" android:title="Devoluciones"></item>
+</menu>

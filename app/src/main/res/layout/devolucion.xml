@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="3dp"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal" >
+    	
+	    <TextView
+	        android:id="@+id/textCodigoProducto"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
+	        android:text="Cliente: " />
+	
+	    <TextView
+	        android:id="@+id/txt_nroCliente"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="NroCliente" />
+	    
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="10dp"
+    	android:orientation="vertical" >
+	    
+	    <TextView
+	        android:id="@+id/txt_nombreCliente"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="Nombre-Cliente"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	    <Button
+	        android:id="@+id/btn_datos_cliente_dev"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Ver Datos de Cliente" />
+	    
+	</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="20dp"
+    	android:orientation="horizontal" >
+
+	    <TextView
+	        android:id="@+id/txtTipoPedido"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Tipo Pedido: DEVOLUCIÓN" />
+	
+	</LinearLayout>
+	    
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" >
+    
+	<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="#33A1C9"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/code"
+                    android:layout_width="50sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginStart="1dp"
+                    android:maxLines="1"
+                    android:text="Cód."
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/manufacturer"
+                    android:layout_width="300sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:maxLines="1"
+                    android:text="Descripción"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="17sp" />
+
+
+                
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="50sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="11dp"
+                    android:layout_toRightOf="@+id/manufacturer"
+                    android:maxLines="1"
+                    android:text="Cant."
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="17sp" />
+                
+                <TextView
+                    android:id = "@+id/prto_precioU"
+                    android:layout_width = "100sp"
+                    android:layout_height = "wrap_content"
+                    android:layout_alignParentTop = "true"
+                    android:layout_marginLeft = "11dp"
+                    android:layout_toRightOf = "@+id/name"
+                    android:maxLines = "1"
+                    android:text = "Precio U."
+                    android:textAppearance = "?android:attr/textAppearanceLarge"
+                    android:textSize = "17sp"/>
+
+				<TextView
+					android:id = "@+id/producto_motivo_dev"
+					android:layout_width = "200sp"
+					android:layout_height = "wrap_content"
+					android:layout_marginLeft = "11dp"
+					android:maxLines = "1"
+					android:textColor="#000"
+					android:text = "Motivo Dev."
+					android:textAppearance = "?android:attr/textAppearanceLarge"
+					android:textSize = "17sp"/>
+
+                <TextView
+                    android:id="@+id/visc200"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="11dp"
+                    android:layout_toRightOf="@+id/prto_precioU"
+                    android:maxLines="1"
+                    android:text="Subtotal"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="17sp" />
+            </LinearLayout>
+            <ListView
+                android:id="@+id/lista_productos_devolucion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="7dp" >
+            </ListView>
+        </LinearLayout>
+	</HorizontalScrollView>
+	
+	<LinearLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="5dp"
+	    android:orientation="horizontal" >
+	    
+	    <TextView
+	        android:id="@+id/textCantidad"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="Total: $" />
+
+	    <TextView
+	        android:id="@+id/textTotalDevolucion"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="0" />
+	    
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_productos_devolucion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Prods"
+            android:textSize="@dimen/boton_cabecera_" />
+
+        <Button
+            android:id="@+id/btn_cancelar_devolucion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancelar"
+            android:textSize="@dimen/boton_cabecera_" />
+
+        <Button
+            android:id="@+id/btn_cerrar_devolucion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Guardar"
+            android:textSize="@dimen/boton_cabecera_" />
+
+        <Button
+            android:id="@+id/btn_notas_devolucion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Notas"
+            android:textSize="@dimen/boton_cabecera_" />
+
+    </LinearLayout>
+
+</LinearLayout>
+</RelativeLayout>

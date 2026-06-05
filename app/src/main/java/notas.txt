@@ -1,0 +1,13 @@
+Te paso a continuación unas modificaciones para la distribuidora. En este caso la distribuidora es familyAccesorios que también
+esta en el repositorio NexoDistribuidora. En este caso nos pidieron que en el buscador de clientes (para los que están en la ruta y
+los que no) que existe actualmente se pueda filtrar por localidad también.
+
+Esta app trabajaba con un servidor ftp, al cual se conecta para subir o descargar los datos. Una vez que la app se instala te lleva
+a una ventana de configuración donde hay que poner los datos del servidor ftp para luego descargar los datos con los que se van a
+llenar la BD. Hoy por hoy el error que tenemos este que al tratar de descargar este archivo con todos los datos no lo descarga.
+Esa funcionalidad la vas a encontrar en com.distribuidora.distribuidorapreventas.Configuracion.java
+
+Me va a quedar pendiente de pasarte las credenciales para que puedas probarlo con el servidor de testing de la oficina.
+
+En cuanto a las credenciales para la app son, servidor 190.188.1.235, puerto 21, usuario distribuidora, pass v
+

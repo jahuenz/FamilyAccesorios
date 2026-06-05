@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    
+                    <TextView
+                    	android:id = "@+id/fecha"
+                    	android:layout_width = "100sp"
+                    	android:layout_height = "wrap_content"
+                    	android:layout_marginLeft = "0dp"
+                    	android:layout_marginStart = "1dp"
+                    	android:layout_alignParentTop = "true"
+                    	android:maxLines = "1"
+                    	android:textAppearance = "?android:attr/textAppearanceLarge"
+                    	android:textColor="#000"
+                    	android:textSize = "17sp"/>
+
+            		<TextView
+                    	android:id = "@+id/nombre_cliente"
+                    	android:layout_width = "200sp"
+	                    android:layout_height = "wrap_content"
+	                    android:layout_marginLeft = "11dp"
+	                    android:maxLines = "1"
+	                    android:textAppearance = "?android:attr/textAppearanceLarge"
+	                    android:textColor="#000"
+	                    android:textSize = "17sp"/>
+
+            		<TextView
+	                    android:id = "@+id/tipo"
+	                    android:layout_width = "150sp"
+	                    android:layout_height = "wrap_content"
+	                    android:layout_alignParentTop = "true"
+	                    android:layout_marginLeft = "11dp"
+	                    android:layout_toRightOf = "@+id/nombre_cliente"
+	                    android:maxLines = "1"
+	                    android:textAppearance = "?android:attr/textAppearanceLarge"
+	                    android:textColor="#000"
+	                    android:textSize = "17sp"/>
+
+            		<TextView
+	                    android:id = "@+id/Descripcion"
+	                    android:layout_width = "450sp"
+	                    android:layout_height = "wrap_content"
+	                    android:layout_alignParentTop = "true"
+	                    android:layout_marginLeft = "11dp"
+	                    android:layout_toRightOf = "@+id/tipo"
+	                    android:maxLines = "1"
+	                    android:textAppearance = "?android:attr/textAppearanceLarge"
+	                    android:textColor="#000"
+	                    android:textSize = "17sp"/>
+
+</LinearLayout>

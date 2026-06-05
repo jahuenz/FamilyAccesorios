@@ -1,0 +1,40 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Android build outputs
+/build/
+**/build/
+
+# Gradle cache
+.gradle/
+gradle-app.setting
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Local machine configuration - NEVER commit
+local.properties
+
+# Android signing keys
+*.keystore
+*.jks
+keystore.properties
+
+# IntelliJ / Android Studio - local-only files
+.idea/deploymentTargetSelector.xml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/assetWizardSettings.xml
+.idea/navEditor.xml
+.idea/caches/
+*.iml
+
+# External native build
+.externalNativeBuild/
+.cxx/
+
+# Log files
+*.log
+
+# Generated on project import
+import-summary.txt

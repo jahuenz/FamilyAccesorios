@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="motivos_devolucion">
+        <item>FALLA DE FÁBRICA</item>
+        <item>GARANTÍA</item>
+        <item>CONSIGNACIÓN</item>
+    </string-array>
+    <string-array name="forma_pago">
+        <item>EFECTIVO</item>
+        <item>CHEQUE</item>
+        <item>TRANSFERENCIA BANCARIA</item>
+    </string-array>
+    <string-array name="bancos">
+        <item>BANCO GALICIA</item>
+        <item>BANCO HIPOTECARIO</item>
+        <item>A CUENTA DE TERCEROS</item>
+    </string-array>
+</resources>

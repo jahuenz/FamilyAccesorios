@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/item1" android:title="@string/opc">
+        <menu>
+            <item android:id="@+id/itemSincronizacion"
+                  android:title="Sincronización"/>
+            <item android:id="@+id/itemConfiguracion"
+                  android:title="Configuración"/>
+            <item android:id="@+id/itemMantenimiento" android:title="Mantenimiento"/>
+            <item android:id="@+id/itemBorrarIndice" android:title="Reiniciar indice pedido"/>
+        </menu>
+    </item>
+    <item android:id="@+id/item2" android:title="@string/cons">
+        <menu>
+    		<item android:id="@+id/itemMovimientos" android:title="Movimientos"></item>
+   		 	<item android:id="@+id/itemProductos" android:title="Productos"></item>
+    		<item android:id="@+id/itemStock" android:title="Stock Actual"></item>
+    		<item android:id="@+id/itemClientes" android:title="Clientes"></item>
+		</menu>
+    </item>
+</menu>

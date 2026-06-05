@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+	<LinearLayout
+   		android:layout_width="match_parent"
+   		android:layout_height="match_parent"
+    	android:orientation="vertical" >
+
+    	<TextView
+        	android:id="@+id/textCodigoProducto"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Contraseña administrador:" />
+
+    	<EditText
+       		android:id="@+id/edt_contrasenia_admin"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:ems="10" >
+
+        	<requestFocus />
+    	</EditText>
+
+   		<TextView
+   		    android:id="@+id/textNombreProducto"
+   		    android:layout_width="wrap_content"
+   		    android:layout_height="wrap_content"
+   		    android:text="Numero vendedor" />
+
+    	<EditText
+    	    android:id="@+id/edt_vendedor"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+    	    android:ems="10"
+    	    android:inputType="number" />
+
+    	<TextView
+    	    android:id="@+id/textCondVta"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:text="FTP" />
+
+    	<EditText
+        	android:id="@+id/edt_ftp"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:ems="10" />
+    	<TextView
+        	android:id="@+id/textView7"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Puerto" />
+
+    	<EditText
+    	    android:id="@+id/edt_puerto"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+    	    android:ems="10"
+    	    android:inputType="number" />
+
+    	<TextView
+        	android:id="@+id/textTotalPedido"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Usuario" />
+
+    	<EditText
+        	android:id="@+id/edt_usuario"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:ems="10" />
+
+    	<TextView
+    	    android:id="@+id/textPrecio"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:text="Contraseña" />
+
+    	<EditText
+    	    android:id="@+id/edt_contrasenia_usuario"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+    	    android:ems="10" />
+
+    	<TextView
+        	android:id="@+id/textDescuento"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Días limpieza" />
+
+    	<EditText
+    	    android:id="@+id/edt_dias_limpieza"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+    	    android:ems="10"
+    	    android:inputType="number" />
+
+    	<Button
+        	android:id="@+id/btn_guardar"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_horizontal"
+        	android:text="Guardar" />
+
+    	<LinearLayout 
+    	    android:layout_width="match_parent"
+   			android:layout_height="match_parent"
+    		android:orientation="horizontal">
+        	
+	    	<Button
+	    	    android:id="@+id/btn_probar_con_remota"
+	    	    android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:layout_weight="1"
+	    	    android:text="Prob. Con. Remot" />
+	
+	    	<Button
+	    	    android:id="@+id/btn_probar_con_local"
+	    	    android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:layout_weight="1"
+	    	    android:text="Prob. Con. Local" />
+
+		</LinearLayout>
+	</LinearLayout>
+</ScrollView>

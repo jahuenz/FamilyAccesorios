@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="#33A1C9"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/code"
+                    android:layout_width="120sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginStart="1dp"
+                    android:maxLines="1"
+                    android:text="Cód."
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/manufacturer"
+                    android:layout_width="200sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:maxLines="1"
+                    android:text="Descripción"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="50sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:maxLines="1"
+                    android:text="Cant."
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/visc40"
+                    android:layout_width="100sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:maxLines="1"
+                    android:text="Precio U."
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/visc200"
+                    android:layout_width="100sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:maxLines="1"
+                    android:text="Desc/Rec"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/visc2000"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:maxLines="1"
+                    android:text="Subtotal"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lista_pedidos_detalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp" >
+            </ListView>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_productos_detalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/prods"
+            android:textSize="@dimen/boton_cabecera_" />
+
+        <Button
+            android:id="@+id/btn_cancelar_pedido_detalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancelar"
+            android:textSize="@dimen/boton_cabecera_" />
+
+        <Button
+            android:id="@+id/btn_notas_detalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/notas"
+            android:textSize="@dimen/boton_cabecera_" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout1"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="73dp"
+        android:text="Total: $ " />
+
+</RelativeLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id = "@+id/horizontalScrollView1"
+        	android:layout_width = "wrap_content"
+        	android:layout_height = "wrap_content"
+        	android:layout_alignParentLeft = "true"
+        	android:layout_alignParentRight = "true" >
+       		
+    		<LinearLayout
+            	android:layout_width = "match_parent"
+            	android:layout_height = "350dp"
+            	android:orientation = "vertical">
+            	
+            	<LinearLayout
+                	android:layout_width = "match_parent"
+                	android:layout_height = "wrap_content"
+                	android:layout_margin="8dp"
+                	android:background="#33A1C9"
+                	android:orientation = "horizontal">
+
+            		<TextView
+                    	android:id = "@+id/fecha"
+                    	android:layout_width = "50sp"
+                    	android:layout_height = "wrap_content"
+                    	android:layout_marginLeft = "0dp"
+                    	android:layout_marginStart = "1dp"
+                    	android:layout_alignParentTop = "true"
+                    	android:maxLines = "1"
+                    	android:text = "Fecha"
+                    	android:textAppearance = "?android:attr/textAppearanceLarge"
+                    	android:textSize = "17sp"/>
+
+            		<TextView
+                    	android:id = "@+id/nombre_cliente"
+                    	android:layout_width = "100sp"
+	                    android:layout_height = "wrap_content"
+	                    android:layout_marginLeft = "11dp"
+	                    android:maxLines = "1"
+	                    android:text = "Cliente"
+	                    android:textAppearance = "?android:attr/textAppearanceLarge"
+	                    android:textSize = "17sp"/>
+
+            		<TextView
+	                    android:id = "@+id/tipo"
+	                    android:layout_width = "50sp"
+	                    android:layout_height = "wrap_content"
+	                    android:layout_alignParentTop = "true"
+	                    android:layout_marginLeft = "11dp"
+	                    android:layout_toRightOf = "@+id/nombre_cliente"
+	                    android:maxLines = "1"
+	                    android:text = "Tipo"
+	                    android:textAppearance = "?android:attr/textAppearanceLarge"
+	                    android:textSize = "17sp"/>
+
+            		<TextView
+            		    android:id="@+id/Entrega"
+            		    android:layout_width="100sp"
+            		    android:layout_height="wrap_content"
+            		    android:layout_alignParentTop="true"
+            		    android:layout_marginLeft="11dp"
+            		    android:layout_toRightOf="@+id/tipo"
+            		    android:maxLines="1"
+            		    android:text="Entrega"
+            		    android:textAppearance="?android:attr/textAppearanceLarge"
+            		    android:textSize="17sp" />
+            		
+            		<TextView
+            		    android:id="@+id/Total"
+            		    android:layout_width="100sp"
+            		    android:layout_height="wrap_content"
+            		    android:layout_alignParentTop="true"
+            		    android:layout_marginLeft="11dp"
+            		    android:layout_toRightOf="@+id/tipo"
+            		    android:maxLines="1"
+            		    android:text="Total"
+            		    android:textAppearance="?android:attr/textAppearanceLarge"
+            		    android:textSize="17sp" />
+
+        		</LinearLayout>
+
+        		<ListView
+        		    android:id="@+id/lst_pedidos"
+        		    android:layout_width="match_parent"
+        		    android:layout_height="wrap_content"
+        		    android:layout_alignParentLeft="true"
+        		    android:layout_alignParentRight="true"
+        		    android:layout_alignParentTop="true" >
+
+       			</ListView>
+       	</LinearLayout>	
+</HorizontalScrollView>

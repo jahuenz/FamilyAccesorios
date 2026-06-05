@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/txt_id_cliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp" />
+
+    <TextView
+        android:id="@+id/txt_razonSocial_cliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp" />
+
+    <TextView
+        android:id="@+id/txt_porc_min_cobranza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp" />
+    
+    <TextView
+        android:id="@+id/txt_saldo_cta_cte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp" />
+
+    <TextView
+        android:id="@+id/txt_categoria_contribuyente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp" />
+
+    <TextView
+        android:id="@+id/txt_localidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp" />
+    
+    <TextView
+        android:id="@+id/txt_provincia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp" />
+
+    <TextView
+        android:id="@+id/txt_domicilio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp" />
+
+    <TextView
+        android:id="@+id/txt_mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+    	android:layout_height="match_parent"
+    	android:orientation="horizontal" >
+    
+	    <TextView
+	        android:id="@+id/txt_telefono"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="3dp" />
+	    
+	    <Button 
+	        android:id="@+id/btn_llamar_telefono"
+	        android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="Llamar" />
+	    
+	</LinearLayout>
+    
+    <TextView
+        android:id="@+id/txt_cuit_cuil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp" />
+    
+</LinearLayout>

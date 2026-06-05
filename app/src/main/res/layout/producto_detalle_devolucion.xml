@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    
+	<LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical" >
+
+	    <LinearLayout
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:orientation="horizontal" >
+	    
+		    <TextView
+		        android:id="@+id/textCodigoProducto"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Código: " />
+
+			<EditText
+				android:id="@+id/edtCodigoProducto"
+				android:layout_width="146dp"
+				android:layout_height="wrap_content"
+				android:ems="10"
+				android:selectAllOnFocus="true" />
+		
+		    <Button
+		        android:id="@+id/btn_producto_dev"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Producto" />
+	    
+	</LinearLayout>
+
+    <TextView
+        android:id="@+id/textNombreProducto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Nombre completo del producto" />
+    
+    <TextView
+        android:id="@+id/textStockProducto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Stock del producto" />
+    
+    <LinearLayout
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="20dp"
+    		android:orientation="horizontal" >
+	    
+	    	<TextView
+		        android:id="@+id/textCondVta"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Motivo:" />
+
+		<Spinner
+			android:id="@+id/spn_motivo_devolucion"
+			android:layout_width="190dp"
+			android:layout_height="wrap_content" />
+	    
+		</LinearLayout>
+    
+    <LinearLayout
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="10dp"
+    		android:orientation="horizontal" >    
+    
+		    <TextView
+		        android:id="@+id/textCantidad"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Cantidad:" />
+		
+		    <EditText
+		        android:id="@+id/edtCantidad"
+		        android:layout_width="80dp"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:selectAllOnFocus="true"
+		        android:maxLength="5"
+		        android:inputType="number"
+		        android:text="" />
+	    
+	</LinearLayout>
+	
+    <LinearLayout
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="10dp"
+    		android:orientation="horizontal" >
+
+		<TextView
+			android:id="@+id/textPrecioUnitario"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Precio unitario:"/>
+
+		<EditText
+			android:id="@+id/edtPunitario"
+			android:layout_width="144dp"
+			android:layout_height="wrap_content"
+			android:ems="10"
+			android:inputType="numberDecimal"
+			android:maxLength="10"
+			android:selectAllOnFocus="true"
+			android:text="" />
+	    
+	</LinearLayout>	
+	<LinearLayout
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="10dp"
+    		android:orientation="horizontal" >
+		
+		<TextView
+		    android:id="@+id/textTotal"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Total: $" />
+
+		<TextView
+		    android:id="@+id/textTotalDev"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="" />
+    
+    </LinearLayout>
+	
+    <Button
+        android:id="@+id/btn_agregar_devolucion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Agregar a la devolucion" />
+    
+</LinearLayout>
+</ScrollView>

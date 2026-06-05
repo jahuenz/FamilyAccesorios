@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    
+    				<TextView
+	         			android:id = "@+id/producto_codigo"
+	         			android:layout_width = "50sp"
+	         			android:layout_height = "wrap_content"
+	         			android:layout_marginLeft = "0dp"
+	                    android:layout_marginStart = "1dp"
+	                    android:layout_alignParentTop = "true"
+	                    android:maxLines = "1"
+	                    android:textColor="#000"
+	                    android:text = "Cód."
+	                    android:textAppearance = "?android:attr/textAppearanceLarge"
+	                    android:textSize = "17sp"/>
+
+            		<TextView
+	                    android:id = "@+id/producto_descripcion"
+	                    android:layout_width = "300sp"
+	                    android:layout_height = "wrap_content"
+	                    android:layout_marginLeft = "11dp"
+	                    android:maxLines = "1"                    
+	                    android:textColor="#000"
+	                    android:text = "Descripción"
+	                    android:textAppearance = "?android:attr/textAppearanceLarge"
+	                    android:textSize = "17sp"/>
+
+
+            		<TextView
+	                    android:id = "@+id/producto_cantidad"
+	                    android:layout_width = "50sp"
+	                    android:layout_height = "wrap_content"                    
+	                    android:textColor="#000"
+	                    android:layout_alignParentTop = "true"
+	                    android:layout_marginLeft = "11dp"
+	                    android:layout_toRightOf = "@+id/manufacturer"
+	                    android:maxLines = "1"
+	                    android:text = "Cant."
+	                    android:textAppearance = "?android:attr/textAppearanceLarge"
+	                    android:textSize = "17sp"/>
+
+            		<TextView
+	                    android:id = "@+id/producto_precioU"
+	                    android:layout_width = "100sp"
+	                    android:layout_height = "wrap_content"
+	                    android:textColor="#000"
+	                    android:layout_alignParentTop = "true"
+	                    android:layout_marginLeft = "11dp"
+	                    android:layout_toRightOf = "@+id/name"
+	                    android:maxLines = "1"
+	                    android:text = "Precio U."
+	                    android:textAppearance = "?android:attr/textAppearanceLarge"
+	                    android:textSize = "17sp"/>
+
+					<TextView
+						android:id = "@+id/producto_motivo_dev"
+						android:layout_width = "200sp"
+						android:layout_height = "wrap_content"
+						android:layout_marginLeft = "11dp"
+						android:maxLines = "1"
+						android:textColor="#000"
+						android:text = "Motivo Dev."
+						android:textAppearance = "?android:attr/textAppearanceLarge"
+						android:textSize = "17sp"/>
+            		
+            		<TextView
+	                    android:id = "@+id/producto_subtotal"
+	                    android:layout_width = "150sp"
+	                    android:layout_height = "wrap_content"
+	                    android:textColor="#000"
+	                    android:layout_alignParentTop = "true"
+	                    android:layout_marginLeft = "11dp"
+	                    android:layout_toRightOf = "@+id/visc200"
+	                    android:maxLines = "1"
+	                    android:text = "Subtotal"
+	                    android:textAppearance = "?android:attr/textAppearanceLarge"
+	                    android:textSize = "17sp"/>
+
+</LinearLayout>

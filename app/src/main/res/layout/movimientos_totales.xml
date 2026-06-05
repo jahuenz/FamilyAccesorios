@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width = "match_parent"
+        android:layout_height = "match_parent"
+        android:orientation = "vertical">
+
+    	<LinearLayout android:layout_width = "match_parent"
+        	      android:layout_height = "wrap_content"
+        	      android:layout_marginTop="20dp"
+        		  android:orientation = "horizontal">
+        		  
+            	<TextView
+                    android:id = "@+id/tipo"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:text = "Pedidos Realizados: "
+                    android:textSize = "17sp"/>
+            	
+            	<TextView
+            	    android:id="@+id/pedidos_realizados"
+            	    android:layout_width="wrap_content"
+            	    android:layout_height="wrap_content"
+            	    android:textSize="17sp" />
+            	
+        </LinearLayout>
+        
+        <LinearLayout android:layout_width = "match_parent"
+        	      android:layout_height = "wrap_content"
+        	      android:layout_marginTop="20dp"
+        		  android:orientation = "horizontal">
+            	
+            	<TextView
+                    android:id = "@+id/total"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:text = "Pedido Mayor $"
+                    android:textSize = "17sp"/>
+            	
+            	<TextView
+                    android:id = "@+id/pedido_mayor"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:textSize = "17sp"/>
+        </LinearLayout>
+	
+        <LinearLayout android:layout_width = "match_parent"
+        	      android:layout_height = "wrap_content"
+        	      android:layout_marginTop="20dp"
+        		  android:orientation = "horizontal">
+            	
+            	<TextView
+                    android:id = "@+id/txt_pedido_menos"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:text = "Pedido Menor $"
+                    android:textSize = "17sp"/>
+            	
+            	<TextView
+                    android:id = "@+id/pedido_menor"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:textSize = "17sp"/>
+       </LinearLayout>
+
+        <LinearLayout android:layout_width = "match_parent"
+        	      android:layout_height = "wrap_content"
+        	      android:layout_marginTop="20dp"
+        		  android:orientation = "horizontal">
+            	
+            	<TextView
+                    android:id = "@+id/total_vendido"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:text = "Total Vendido $"
+                    android:textSize = "17sp"/>
+            	
+            	<TextView
+                    android:id = "@+id/total_pedidos"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:textSize = "17sp"/>
+        </LinearLayout>
+        
+        <LinearLayout android:layout_width = "match_parent"
+        	      android:layout_height = "wrap_content"
+        	      android:layout_marginTop="20dp"
+        		  android:orientation = "horizontal">
+            	
+            	<TextView
+                    android:id = "@+id/efectivo"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:text = "Efectivo cobrado $"
+                    android:textSize = "17sp"/>
+            	
+            	<TextView
+                    android:id = "@+id/efectivo_cobrado"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:textSize = "17sp"/>
+        </LinearLayout>
+</LinearLayout>
