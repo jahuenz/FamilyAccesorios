@@ -101,6 +101,14 @@ public class ClientesTodos extends Activity {
 
 			if (preferencias.getIdCabeceraPedido() != 0) {
 				final CabeceraPedido cabeceraPedido = cabeceraPedidoDAO.obtenerCabeceraPedido(preferencias.getIdCabeceraPedido());
+				if (cabeceraPedido == null) {
+					preferencias.setIdCabeceraPedido(0);
+					idCliente = Integer.valueOf(clientesTodosAdapter.getItem(info.position).toString());
+					Intent intent = new Intent(getApplicationContext(), PedidoContenedor.class);
+					intent.putExtra("idCliente", idCliente);
+					startActivity(intent);
+					break;
+				}
 				Cliente cliente = clienteDAO.obtenerCliente(cabeceraPedido.getIdCliente());
 				Context context = this;
 				String title = "Venta pendiente";
@@ -174,6 +182,13 @@ public class ClientesTodos extends Activity {
 
 			if (preferencias.getIdCabeceraDevolucion() != 0) {
 				final CabeceraPedido cabeceraPedido = cabeceraPedidoDAO.obtenerCabeceraPedido(preferencias.getIdCabeceraDevolucion());
+				if (cabeceraPedido == null) {
+					preferencias.setIdCabeceraDevolucion(0);
+					Intent dev = new Intent(getApplicationContext(), Devoluciones.class);
+					dev.putExtra("idCliente", Integer.valueOf(clientesTodosAdapter.getItem(info.position).toString()));
+					startActivity(dev);
+					break;
+				}
 				Cliente cliente = clienteDAO.obtenerCliente(cabeceraPedido.getIdCliente());
 				Context context = this;
 				String title = "Devolución pendiente";
