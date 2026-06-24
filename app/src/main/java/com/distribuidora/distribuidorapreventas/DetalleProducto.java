@@ -28,6 +28,8 @@ import com.distribuidora.model.DetallePedidoTemporal;
 import com.distribuidora.model.Producto;
 import com.distribuidora.model.Stock;
 import com.distribuidora.model.Usuario;
+import android.widget.Toast;
+
 import com.distribuidora.utils.Preferencias;
 
 public class DetalleProducto extends Activity {
@@ -264,22 +266,19 @@ public class DetalleProducto extends Activity {
 							valores.put(DetallePedidoTemporalDAO.CANTIDAD, cantidad);
 							valores.put(DetallePedidoTemporalDAO.STOCK, detallePedidoTemporal.getStock());
 							valores.put(DetallePedidoTemporalDAO.CANTIDAD_ENTREGADOS, cantidadEntregados);
-//							if(!user.isAdministrator()){
 							if (!preferencias.esAdministrador()) {
 								valores.put(DetallePedidoTemporalDAO.PRECIO_UNITARIO, detallePedidoTemporal.getPrecioUnitario());
 							} else {
 								valores.put(DetallePedidoTemporalDAO.PRECIO_UNITARIO, Double.valueOf(edt_precio_unitario.getText().toString()));
 							}
 							detallePedidoTemporalDAO.update(valores, detallePedidoTemporal.getId());
-							displayAlertDialog("Atencion!", "El producto se actualizo con exito.", false);
+							Toast.makeText(DetalleProducto.this, "Producto actualizado.", Toast.LENGTH_SHORT).show();
 						} else {
-
 							valores.put(DetallePedidoTemporalDAO.CANTIDAD, cantidad);
 							valores.put(DetallePedidoTemporalDAO.CANTIDAD_ENTREGADOS, cantidadEntregados);
 							valores.put(DetallePedidoTemporalDAO.ID_CABECERA_PEDIDO, detallePedidoTemporal.getIdCabeceraPedido());
 							valores.put(DetallePedidoTemporalDAO.PRODUCTO_ID, detallePedidoTemporal.getIdProducto());
 							valores.put(DetallePedidoTemporalDAO.PORCENTAJE_DESCUENTO_APLICADO, detallePedidoTemporal.getPorcentajeDescuento());
-//							if(!user.isAdministrator()){
 							if (!preferencias.esAdministrador()) {
 								valores.put(DetallePedidoTemporalDAO.PRECIO_UNITARIO, detallePedidoTemporal.getPrecioUnitario());
 							} else {
@@ -287,13 +286,11 @@ public class DetalleProducto extends Activity {
 							}
 							valores.put(DetallePedidoTemporalDAO.STOCK, detallePedidoTemporal.getStock());
 							detallePedidoTemporalDAO.insert(valores);
-
-							displayAlertDialog("Atencion!", "El producto se añadió exitosamente al pedido.", false);
-							edt_cantidad.setText("");
+							Toast.makeText(DetalleProducto.this, "Producto añadido al pedido.", Toast.LENGTH_SHORT).show();
 						}
+						setResult(RESULT_OK);
+						finish();
 					}
-
-					edt_codigo.setText("0");
 				}
 			}
 

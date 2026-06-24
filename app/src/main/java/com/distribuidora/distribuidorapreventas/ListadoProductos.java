@@ -28,6 +28,8 @@ import com.distribuidora.utils.Preferencias;
 
 public class ListadoProductos extends Activity {
 
+	private static final int REQUEST_DETALLE_PRODUCTO = 1;
+
 	List<Producto> productos;
 	List<Producto> productos_filtrados;
 	List<Rubro> rubros;
@@ -117,7 +119,7 @@ public class ListadoProductos extends Activity {
 				intent.putExtra("idProducto", idProducto);
 				intent.putExtra("idCliente", idCliente);
 				intent.putExtra("idCabeceraPedido", idCabeceraPedido);
-				startActivity(intent);
+				startActivityForResult(intent, REQUEST_DETALLE_PRODUCTO);
 			}
 		});
 
@@ -144,6 +146,14 @@ public class ListadoProductos extends Activity {
 			}
 		});
 
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_DETALLE_PRODUCTO && resultCode == RESULT_OK) {
+			edt_filtrar_productos.setText("");
+		}
 	}
 
 	@Override
