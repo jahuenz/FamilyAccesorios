@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -105,10 +106,10 @@ public class Sincronizacion extends Activity {
 			for (Iterator iterator = cabecerasPedidos.iterator(); iterator.hasNext();) {
 				CabeceraPedido cabeceraPedido = (CabeceraPedido) iterator.next();
 				String filaActual = cabeceraPedido.getId() + ",";
-				filaActual += cabeceraPedido.getTotal() + ",";
+				filaActual += BigDecimal.valueOf(cabeceraPedido.getTotal()).toPlainString() + ",";
 				filaActual += cabeceraPedido.getIdCliente() + ",";
 				filaActual += cabeceraPedido.getFecha("yyyyMMddHHmmss") + ",";
-				filaActual += cabeceraPedido.getImporteEntrega() + ",";
+				filaActual += BigDecimal.valueOf(cabeceraPedido.getImporteEntrega()).toPlainString() + ",";
 				filaActual += "\"" + cabeceraPedido.getObservaciones() + "\",";
 				filaActual += cabeceraPedido.getIdTipoPedido() + ",";
 				filaActual += cabeceraPedido.getIdCondicionVenta() + ",";
@@ -129,7 +130,7 @@ public class Sincronizacion extends Activity {
 				Cobranza cobro = (Cobranza) iterator.next();
 				String filaActual = cobro.getId() + ",";
 				filaActual += cobro.getFecha() + ",";
-				filaActual += cobro.getImporte() + ",";
+				filaActual += BigDecimal.valueOf(cobro.getImporte()).toPlainString() + ",";
 				filaActual += cobro.getForma_pago() + ",";
 				filaActual += cobro.getNro_cheque() + ",";
 				filaActual += cobro.getId_cliente() + ",";
@@ -171,10 +172,10 @@ public class Sincronizacion extends Activity {
 				DetallePedido detallePedido = (DetallePedido) iterator.next();
 				String filaActual = detallePedido.getId() + ",";
 				filaActual += detallePedido.getCantidad() + ",";
-				filaActual += detallePedido.getPrecioConDescuento() + ",";
+				filaActual += BigDecimal.valueOf(detallePedido.getPrecioConDescuento()).toPlainString() + ",";
 				filaActual += detallePedido.getIdCabeceraPedido() + ",";
 				filaActual += "\"" + detallePedido.getIdProducto() + "\",";
-				filaActual += detallePedido.getPorcentajeDescuentoAplicado() + ",";
+				filaActual += BigDecimal.valueOf(detallePedido.getPorcentajeDescuentoAplicado()).toPlainString() + ",";
 				filaActual += detallePedido.getTipo() + ",";
 				filaActual += detallePedido.getCantidadEntregados();
 

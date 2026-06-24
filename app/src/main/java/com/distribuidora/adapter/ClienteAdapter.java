@@ -53,39 +53,27 @@ public class ClienteAdapter extends BaseAdapter implements Filterable {
 		Cliente cliente = clientes.get(position);
 		Ruta ruta = rutaDAO.obtenerRuta(cliente.getId());
 
-		if (ruta.getAtendido() == 1) {
-			int color = context.getResources().getColor(R.color.color_atendido);
-			holder.id.setText(Integer.toString((cliente.getId())));
-			holder.id.setTextColor(color);
-			holder.razon_social.setText(cliente.getRazonSocial());
-			holder.razon_social.setTextColor(color);
-			holder.domicilio.setText(cliente.getDomicilio());
-			holder.domicilio.setTextColor(color);
-			holder.localidad.setText(cliente.getLocalidad());
-			holder.localidad.setTextColor(color);
+		holder.id.setText(Integer.toString(cliente.getId()));
+		holder.razon_social.setText(cliente.getRazonSocial());
+		holder.domicilio.setText(cliente.getDomicilio());
+		holder.localidad.setText(cliente.getLocalidad());
+
+		boolean tieneDeuda = cliente.getSaldoCtaCte() > 0;
+		boolean fueAtendido = ruta.getAtendido() == 1;
+
+		int color;
+		if (tieneDeuda && fueAtendido) {
+			color = context.getResources().getColor(R.color.color_deuda_atendido);
+		} else if (tieneDeuda) {
+			color = context.getResources().getColor(R.color.color_deuda);
+		} else if (fueAtendido) {
+			color = context.getResources().getColor(R.color.color_atendido);
+		} else if (ruta.getAtendido() == 2) {
+			color = context.getResources().getColor(R.color.color_motivo_no_atendido);
 		} else {
-			if (ruta.getAtendido() == 2) {
-				int color = context.getResources().getColor(R.color.color_motivo_no_atendido);
-				holder.id.setText(Integer.toString((cliente.getId())));
-				holder.id.setTextColor(color);
-				holder.razon_social.setText(cliente.getRazonSocial());
-				holder.razon_social.setTextColor(color);
-				holder.domicilio.setText(cliente.getDomicilio());
-				holder.domicilio.setTextColor(color);
-				holder.localidad.setText(cliente.getLocalidad());
-				holder.localidad.setTextColor(color);
-			} else {
-				int color = context.getResources().getColor(R.color.color_defecto);
-				holder.id.setText(Integer.toString((cliente.getId())));
-				holder.id.setTextColor(color);
-				holder.razon_social.setText(cliente.getRazonSocial());
-				holder.razon_social.setTextColor(color);
-				holder.domicilio.setText(cliente.getDomicilio());
-				holder.domicilio.setTextColor(color);
-				holder.localidad.setText(cliente.getLocalidad());
-				holder.localidad.setTextColor(color);
-			}
+			color = context.getResources().getColor(R.color.color_defecto);
 		}
+		applyColor(holder, color);
 
 		return convertView;
 	}
@@ -162,6 +150,13 @@ public class ClienteAdapter extends BaseAdapter implements Filterable {
 
 	public double getItemSaldoCtaCte(int position) {
 		return clientes.get(position).getSaldoCtaCte();
+	}
+
+	private void applyColor(ViewHolder holder, int color) {
+		holder.id.setTextColor(color);
+		holder.razon_social.setTextColor(color);
+		holder.domicilio.setTextColor(color);
+		holder.localidad.setTextColor(color);
 	}
 
 	static class ViewHolder {

@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     //compileSdkVersion 34
@@ -9,8 +11,10 @@ android {
 
     defaultConfig {
         applicationId "com.distribuidora.distribuidorapreventas"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 34
+        versionCode 34
+        versionName "13"
         multiDexEnabled true
     }
 
@@ -29,6 +33,10 @@ dependencies {
     implementation files('libs/commons-net-3.3.jar')
     implementation files('libs/mail.jar')
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
-    implementation 'com.google.android.gms:play-services:12.0.1'
+    implementation 'com.google.android.gms:play-services-base:18.5.0'
     implementation 'androidx.multidex:multidex:2.0.1'
+
+    implementation platform('com.google.firebase:firebase-bom:33.7.0')
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
 }

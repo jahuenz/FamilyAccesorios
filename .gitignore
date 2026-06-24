@@ -29,6 +29,9 @@ keystore.properties
 .idea/caches/
 *.iml
 
+# Release build outputs
+app/release/
+
 # External native build
 .externalNativeBuild/
 .cxx/
