@@ -6,6 +6,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -43,6 +45,9 @@ public class MainActivity extends Activity {
 
 		usuario = (TextView) findViewById(R.id.txt_nombre);
 		nro_usuario = (TextView) findViewById(R.id.txt_numero);
+
+		TextView version = (TextView) findViewById(R.id.txt_version);
+		version.setText("Versión: " + obtenerVersionApp());
 
 		usuarioDAO = new UsuarioDAO(getApplicationContext());
 
@@ -82,6 +87,15 @@ public class MainActivity extends Activity {
 					"realizar tareas de sincronización", false);
 		}
 
+	}
+
+	private String obtenerVersionApp() {
+		try {
+			PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+			return info.versionName;
+		} catch (PackageManager.NameNotFoundException e) {
+			return "";
+		}
 	}
 
 	@Override

@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="20dp">
 
@@ -31,15 +31,15 @@
                 android:text="" />
 
         </LinearLayout>
-        
-        <LinearLayout 
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
             android:gravity="center">
-            
-            <TextView 
+
+            <TextView
                 android:id="@+id/txtFormaPago"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,37 +59,36 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@android:drawable/ic_menu_edit"
-                android:text="Editar"
-                android:drawableStart="@android:drawable/ic_menu_edit"/>
+                android:drawableStart="@android:drawable/ic_menu_edit"
+                android:text="Editar" />
         </LinearLayout>
-        
-        <LinearLayout 
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:orientation="horizontal"
-           android:layout_marginTop="20dp">
-           
-           <TextView 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
                 android:id="@+id/txtTotalAdeudado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total adeudado: "/> 
-                
-           <TextView 
-               android:id="@+id/txtTotalAdeudadoValor"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text=""/>            
-         </LinearLayout> 
-        
-        
-        <LinearLayout 
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:orientation="horizontal"
-           android:layout_marginTop="20dp">
-           
-           <TextView 
+                android:text="Total adeudado: " />
+
+            <TextView
+                android:id="@+id/txtTotalAdeudadoValor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
                 android:id="@+id/txtImporte"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -102,67 +101,95 @@
                 android:inputType="numberDecimal"
                 android:maxLength="10"
                 android:text="" />
-         </LinearLayout> 
-         
-        <LinearLayout 
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:orientation="horizontal"
-           android:layout_marginTop="20dp">
-           
-           <TextView 
-               android:id="@+id/txtNumeroCheque"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:visibility="invisible"
-               android:text="Ultimos 4 números del cheque: "/>
-           
-           <EditText 
-               android:id="@+id/edtNumeroCheque"
-               android:layout_width="80dp"
-               android:layout_height="wrap_content"
-               android:visibility="invisible"
-               android:inputType="number"
-               android:maxLength="4"
-               android:text=""/> 
         </LinearLayout>
-        
-        <LinearLayout 
+
+
+        <!-- Últimos 4 dígitos: Cheque físico, eCheq Family, eCheq Terceros -->
+        <LinearLayout
+            android:id="@+id/llNumero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="15dp"
-            android:gravity="center">
+            android:layout_marginTop="20dp"
+            android:visibility="gone">
 
             <TextView
-                android:id="@+id/txtBancos"
+                android:id="@+id/txtNumero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Transferencia en: "
-                android:visibility="invisible" />
+                android:text="Últimos 4 números: "/>
 
-            <Spinner
-                android:id="@+id/spnBancos"
+            <EditText
+                android:id="@+id/edtNumero"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="4"
+                android:text="" />
+        </LinearLayout>
+
+        <!-- Fecha de vencimiento: Cheque físico, eCheq Family, eCheq Terceros -->
+        <LinearLayout
+            android:id="@+id/llFechaVencimiento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txtFechaVencimiento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:layout_weight="1" 
-                android:prompt="@string/banco_prompt"
-                android:entries="@array/bancos"/>   
+                android:text="Fecha vencimiento: "/>
+
+            <EditText
+                android:id="@+id/edtFechaVencimiento"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:hint="Seleccionar fecha"
+                android:focusable="false"
+                android:clickable="true"
+                android:cursorVisible="false"
+                android:text="" />
         </LinearLayout>
-        
-        <LinearLayout 
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:orientation="horizontal"
-           android:layout_marginTop="20dp">
+
+        <!-- Nota: libre, opcional, para todas las formas de pago -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/txtNota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nota: "/>
+
+            <EditText
+                android:id="@+id/edtNota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLength="200"
+                android:maxLines="3"
+                android:hint="Aclaración opcional para el procesamiento..."
+                android:text="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
 
             <Button
                 android:id="@+id/btnCancelar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Cancelar" 
+                android:text="Cancelar"
                 android:textSize="@dimen/boton_cabecera_"/>
 
             <Button
@@ -172,9 +199,9 @@
                 android:layout_weight="1"
                 android:text="Guardar"
                 android:textSize="@dimen/boton_cabecera_" />
-            
+
         </LinearLayout>
 
-   	</LinearLayout>
+    </LinearLayout>
 
 </ScrollView>

@@ -4,8 +4,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -14,7 +17,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 	
     public static final String DB_NAME = "distribuidora.db";
-    public static final int DB_VERSION = 14;
+    public static final int DB_VERSION = 17;
     //The Android's default system path of your application database.
     private static String DB_PATH = "/data/data/com.distribuidora/databases/";
     private SQLiteDatabase myDataBase;
@@ -48,14 +51,14 @@ public class DBHelper extends SQLiteOpenHelper {
     // Called whenever newVersion != oldVersion
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Typically do ALTER TABLE statements, but... we're just in development, so:
+        // Tablas espejo de datos maestros que bajan del FTP: se pisan sin drama,
+        // se vuelven a descargar en la próxima sincronización.
         db.execSQL("DROP TABLE IF EXISTS " + UsuarioDAO.TABLA);
         db.execSQL("DROP TABLE IF EXISTS " + ClienteDAO.TABLA);
         db.execSQL("DROP TABLE IF EXISTS " + CabeceraPedidoDAO.TABLA);
         db.execSQL("DROP TABLE IF EXISTS " + ConfiguracionDAO.TABLA);
         db.execSQL("DROP TABLE IF EXISTS " + DescuentoDAO.TABLA);
         db.execSQL("DROP TABLE IF EXISTS " + DetallePedidoDAO.TABLA);
-        db.execSQL("DROP TABLE IF EXISTS " + MovimientoDAO.TABLA);
         db.execSQL("DROP TABLE IF EXISTS " + ProductoDAO.TABLA);
         db.execSQL("DROP TABLE IF EXISTS " + RubroDAO.TABLA);
         db.execSQL("DROP TABLE IF EXISTS " + RutaDAO.TABLA);
@@ -63,8 +66,76 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TipoPedidoDAO.TABLA);
         db.execSQL("DROP TABLE IF EXISTS " + CondicionVentaDAO.TABLA);
         db.execSQL("DROP TABLE IF EXISTS " + DetallePedidoTemporalDAO.TABLA);
-        db.execSQL("DROP TABLE IF EXISTS " + CobranzaDAO.TABLA);
-        onCreate(db); // run onCreate to get the new database
+        db.execSQL(UsuarioDAO.CREATE);
+        db.execSQL(ClienteDAO.CREATE);
+        db.execSQL(CabeceraPedidoDAO.CREATE);
+        db.execSQL(ConfiguracionDAO.CREATE);
+        db.execSQL(DescuentoDAO.CREATE);
+        db.execSQL(DetallePedidoDAO.CREATE);
+        db.execSQL(ProductoDAO.CREATE);
+        db.execSQL(RubroDAO.CREATE);
+        db.execSQL(RutaDAO.CREATE);
+        db.execSQL(StockDAO.CREATE);
+        db.execSQL(TipoPedidoDAO.CREATE);
+        db.execSQL(CondicionVentaDAO.CREATE);
+        db.execSQL(DetallePedidoTemporalDAO.CREATE);
+
+        // Tablas con datos generados en el dispositivo, pendientes de subir por FTP:
+        // se migran preservando las filas existentes en vez de dropearlas.
+        migrarPreservandoDatos(db, MovimientoDAO.TABLA, MovimientoDAO.CREATE);
+        migrarPreservandoDatos(db, CobranzaDAO.TABLA, CobranzaDAO.CREATE);
+    }
+
+    /**
+     * Migra una tabla a su nuevo schema sin perder las filas existentes:
+     * renombra la tabla vieja, crea la nueva, copia las columnas que existen
+     * en ambas (por nombre) y descarta las que ya no forman parte del schema.
+     */
+    private void migrarPreservandoDatos(SQLiteDatabase db, String tabla, String createStatement) {
+        Cursor existe = db.rawQuery(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name=?", new String[]{tabla});
+        boolean tablaExiste = existe.getCount() > 0;
+        existe.close();
+
+        if (!tablaExiste) {
+            db.execSQL(createStatement);
+            return;
+        }
+
+        List<String> columnasViejas = obtenerColumnas(db, tabla);
+
+        db.execSQL("ALTER TABLE " + tabla + " RENAME TO " + tabla + "_old");
+        db.execSQL(createStatement);
+
+        List<String> columnasNuevas = obtenerColumnas(db, tabla);
+        List<String> columnasComunes = new ArrayList<>();
+        for (String columna : columnasNuevas) {
+            if (columnasViejas.contains(columna)) {
+                columnasComunes.add(columna);
+            }
+        }
+
+        if (!columnasComunes.isEmpty()) {
+            StringBuilder cols = new StringBuilder();
+            for (int i = 0; i < columnasComunes.size(); i++) {
+                if (i > 0) cols.append(",");
+                cols.append(columnasComunes.get(i));
+            }
+            db.execSQL("INSERT INTO " + tabla + " (" + cols + ") SELECT " + cols + " FROM " + tabla + "_old");
+        }
+
+        db.execSQL("DROP TABLE " + tabla + "_old");
+    }
+
+    private List<String> obtenerColumnas(SQLiteDatabase db, String tabla) {
+        List<String> columnas = new ArrayList<>();
+        Cursor cursor = db.rawQuery("PRAGMA table_info(" + tabla + ")", null);
+        int idxName = cursor.getColumnIndex("name");
+        while (cursor.moveToNext()) {
+            columnas.add(cursor.getString(idxName));
+        }
+        cursor.close();
+        return columnas;
     }
     
     /**
