@@ -116,12 +116,7 @@ public class Configuracion extends Activity {
 					mail();
 
 				} else {
-					if (comprobarFtp()) {
-						new ConexionDatos().execute();
-					} else {
-						displayAlertDialog("Error!", "La conexión con el servidor remoto no pudo realizarse, por favor compruebe " +
-								"los datos ingresados o su conexión a Internet.", false);
-					}
+					new ConexionDatos().execute();
 				}
 			}
 		});
@@ -135,13 +130,7 @@ public class Configuracion extends Activity {
 					displayAlertDialog("Atención!", "Complete todos los campos para continuar.", false);
 					return;
 				}
-
-				if (comprobarFtp()) {
-					displayAlertDialog("Exito!", "Conectado al servidor " + edtFTP.getText().toString() + " satisfactoriamente!", false);
-				} else {
-					displayAlertDialog("Error!", "La conexión con el servidor remoto no pudo realizarse, por favor compruebe " +
-							"los datos ingresados o su conexión a Internet.", false);
-				}
+				new ProbarConexion().execute();
 			}
 		});
 	}
@@ -247,6 +236,53 @@ public class Configuracion extends Activity {
 
 	@Override
 	public void onBackPressed() {
+	}
+
+	private class ProbarConexion extends AsyncTask<Void, Void, Boolean> {
+		private ProgressDialog pDialog;
+		private static final int TIMEOUT_MS = 12000;
+
+		@Override
+		protected void onPreExecute() {
+			pDialog = new ProgressDialog(Configuracion.this);
+			pDialog.setMessage("Probando conexión...");
+			pDialog.setIndeterminate(true);
+			pDialog.setCancelable(false);
+			pDialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			final boolean[] resultado = {false};
+			Thread t = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					resultado[0] = comprobarFtp();
+				}
+			});
+			t.start();
+			try {
+				t.join(TIMEOUT_MS);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+			if (t.isAlive()) {
+				t.interrupt();
+				return false;
+			}
+			return resultado[0];
+		}
+
+		@Override
+		protected void onPostExecute(Boolean resultado) {
+			pDialog.dismiss();
+			if (resultado) {
+				displayAlertDialog("Exito!", "Conectado al servidor " + edtFTP.getText().toString() + " satisfactoriamente!", false);
+			} else {
+				displayAlertDialog("Error!", "La conexión con el servidor remoto no pudo realizarse, por favor compruebe " +
+						"los datos ingresados o su conexión a Internet.", false);
+			}
+		}
 	}
 
 	private class ConexionDatos extends AsyncTask<Void, String, Void> {

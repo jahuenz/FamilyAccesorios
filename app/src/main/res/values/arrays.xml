@@ -7,12 +7,10 @@
     </string-array>
     <string-array name="forma_pago">
         <item>EFECTIVO</item>
-        <item>CHEQUE</item>
-        <item>TRANSFERENCIA BANCARIA</item>
-    </string-array>
-    <string-array name="bancos">
-        <item>BANCO GALICIA</item>
-        <item>BANCO HIPOTECARIO</item>
-        <item>A CUENTA DE TERCEROS</item>
+        <item>CHEQUE FISICO</item>
+        <item>TRANSFERENCIA A FAMILY</item>
+        <item>TRANSFERENCIA A TERCEROS</item>
+        <item>E-CHEQ A FAMILY</item>
+        <item>E-CHEQ A TERCEROS</item>
     </string-array>
 </resources>

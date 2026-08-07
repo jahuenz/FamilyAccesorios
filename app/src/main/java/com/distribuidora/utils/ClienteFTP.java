@@ -19,6 +19,7 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
 import android.content.Context;
+import android.util.Log;
 
 public class ClienteFTP {
 
@@ -49,32 +50,36 @@ public class ClienteFTP {
 	public boolean conectar() {
 		boolean respuesta = false;
 		try {
+			Log.d("FTP", "Iniciando conexión a " + servidor + ":" + puerto);
 			ftpClient = new FTPClient();
 			ftpClient.setConnectTimeout(9000);
-			ftpClient.connect(InetAddress.getByName(servidor), puerto);
-			boolean login = ftpClient.login(usuario, contrasenia);
+			ftpClient.setDefaultTimeout(10000);
+			Log.d("FTP", "Llamando ftpClient.connect()...");
+			ftpClient.connect(servidor, puerto);
+			ftpClient.setSoTimeout(10000);
+			Log.d("FTP", "connect() OK. Reply: " + ftpClient.getReplyCode() + " - " + ftpClient.getReplyString().trim());
 
-			// Activar que se envíe cualquier tipo de archivo
+			Log.d("FTP", "Haciendo login con usuario: " + usuario);
+			boolean login = ftpClient.login(usuario, contrasenia);
+			Log.d("FTP", "login() resultado: " + login + " | Reply: " + ftpClient.getReplyCode() + " - " + ftpClient.getReplyString().trim());
+
 			ftpClient.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
 			ftpClient.enterLocalPassiveMode();
 
-			// Verificar conexión con el servidor.
 			int reply = ftpClient.getReplyCode();
-
 			if (FTPReply.isPositiveCompletion(reply) && login) {
 				respuesta = true;
-				Logger.getLogger(ClienteFTP.class.getName()).log(Level.INFO, "Conectado Satisfactoriamente con " + servidor);
+				Log.d("FTP", "Conectado satisfactoriamente con " + servidor);
 			} else {
-				Logger.getLogger(ClienteFTP.class.getName()).log(Level.INFO, "Imposible conectar con el servidor " + servidor +
-					". Error: " + ftpClient.getReplyString());
+				Log.e("FTP", "Imposible conectar con " + servidor + ". Reply: " + ftpClient.getReplyString().trim());
 			}
 
 		} catch (UnknownHostException ex) {
-			Logger.getLogger(ClienteFTP.class.getName()).log(Level.SEVERE, null, ex);
+			Log.e("FTP", "UnknownHostException: " + ex.getMessage());
 		} catch (SocketException ex) {
-			Logger.getLogger(ClienteFTP.class.getName()).log(Level.SEVERE, null, ex);
+			Log.e("FTP", "SocketException: " + ex.getMessage());
 		} catch (IOException ex) {
-			Logger.getLogger(ClienteFTP.class.getName()).log(Level.SEVERE, null, ex);
+			Log.e("FTP", "IOException: " + ex.getMessage());
 		}
 		return respuesta;
 	}
@@ -82,14 +87,15 @@ public class ClienteFTP {
 	public boolean cambiarDirectorio(String nombreDirectorio) {
 		boolean respuesta = false;
 		try {
+			Log.d("FTP", "Cambiando directorio a: " + nombreDirectorio);
 			if (ftpClient.changeWorkingDirectory(nombreDirectorio)) {
 				respuesta = true;
-				Logger.getLogger(ClienteFTP.class.getName()).log(Level.INFO, "Se cambio satisfactoriamente al directorio " + nombreDirectorio);
+				Log.d("FTP", "Directorio cambiado OK: " + nombreDirectorio);
 			} else {
-				Logger.getLogger(ClienteFTP.class.getName()).log(Level.INFO, "No se puede cambiar al directorio " + nombreDirectorio);
+				Log.e("FTP", "No se puede cambiar al directorio: " + nombreDirectorio + " | Reply: " + ftpClient.getReplyString().trim());
 			}
 		} catch (IOException ex) {
-			Logger.getLogger(ClienteFTP.class.getName()).log(Level.SEVERE, null, ex);
+			Log.e("FTP", "IOException en cambiarDirectorio: " + ex.getMessage());
 		}
 
 		return respuesta;

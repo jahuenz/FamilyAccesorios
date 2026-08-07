@@ -123,19 +123,25 @@ public class Sincronizacion extends Activity {
 
 		List<Cobranza> cobros = cobranzaDAO.ObtenerCobros();
 		archivo.escribirArchivo("cobranza.csv", true);
-		String campos_cob = "id,fecha,importe,forma_pago,nro_cheque,id_cliente,id_usuario,banco";
+		String campos_cob = "id,fecha,importe,forma_pago,nro_cheque,id_cliente,id_usuario,banco,fecha_vencimiento,nota";
 		archivo.escribirArchivo(campos_cob, true);
+		String[] formasPago = getResources().getStringArray(com.distribuidora.distribuidorapreventas.R.array.forma_pago);
 		if (cobros != null) {
 			for (Iterator iterator = cobros.iterator(); iterator.hasNext();) {
 				Cobranza cobro = (Cobranza) iterator.next();
+				int idxFormaPago = cobro.getId_valor() - 1;
+				String formaPago = (idxFormaPago >= 0 && idxFormaPago < formasPago.length) ? formasPago[idxFormaPago] : "";
+
 				String filaActual = cobro.getId() + ",";
 				filaActual += cobro.getFecha() + ",";
 				filaActual += BigDecimal.valueOf(cobro.getImporte()).toPlainString() + ",";
-				filaActual += cobro.getForma_pago() + ",";
-				filaActual += cobro.getNro_cheque() + ",";
+				filaActual += formaPago + ",";
+				filaActual += cobro.getNumero() + ",";
 				filaActual += cobro.getId_cliente() + ",";
 				filaActual += cobro.getId_usuario() + ",";
-				filaActual += cobro.getBanco();
+				filaActual += ",";
+				filaActual += cobro.getFecha_vencimiento() + ",";
+				filaActual += "\"" + cobro.getNota() + "\"";
 
 				archivo.escribirArchivo(filaActual, true);
 				filaActual = "";

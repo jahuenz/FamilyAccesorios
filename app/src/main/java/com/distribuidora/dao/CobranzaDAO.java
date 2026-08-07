@@ -10,104 +10,110 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class CobranzaDAO extends DBHelper {
 
-	private SQLiteDatabase mDB;
-	public static final String TABLA = "COBRANZA";
+    private SQLiteDatabase mDB;
+    public static final String TABLA = "COBRANZA";
 
-	public static final String ID = "id";
-	public static final String FECHA = "fecha";
-	public static final String IMPORTE = "importe";
-	public static final String FORMA_PAGO = "forma_pago";
-	public static final String NRO_CHEQUE = "nro_cheque";
-	public static final String BANCO = "banco";
-	public static final String ID_CLIENTE = "id_cliente";
-	public static final String ID_USUARIO = "id_usuario";
+    public static final String ID               = "id";
+    public static final String FECHA            = "fecha";
+    public static final String IMPORTE          = "importe";
+    public static final String ID_VALOR         = "id_valor";
+    public static final String ITEM             = "item";
+    public static final String FECHA_EMISION    = "fecha_emision";
+    public static final String NUMERO           = "numero";
+    public static final String FECHA_VENCIMIENTO = "fecha_vencimiento";
+    public static final String NOTA             = "nota";
+    public static final String ID_CLIENTE       = "id_cliente";
+    public static final String ID_USUARIO       = "id_usuario";
 
-	public static final int ID_INDEX = 0;
-	public static final int FECHA_INDEX = 1;
-	public static final int IMPORTE_INDEX = 2;
-	public static final int FORMA_PAGO_INDEX = 3;
-	public static final int NRO_CHEQUE_INDEX = 4;	
-	public static final int ID_CLIENTE_INDEX = 5;
-	public static final int ID_USUARIO_INDEX = 6;
-	public static final int BANCO_INDEX = 7;
+    public static final int ID_INDEX               = 0;
+    public static final int FECHA_INDEX            = 1;
+    public static final int IMPORTE_INDEX          = 2;
+    public static final int ID_VALOR_INDEX         = 3;
+    public static final int ITEM_INDEX             = 4;
+    public static final int FECHA_EMISION_INDEX    = 5;
+    public static final int NUMERO_INDEX           = 6;
+    public static final int FECHA_VENCIMIENTO_INDEX = 7;
+    public static final int NOTA_INDEX             = 8;
+    public static final int ID_CLIENTE_INDEX       = 9;
+    public static final int ID_USUARIO_INDEX       = 10;
 
-	public static final String CREATE = "CREATE TABLE " + TABLA + " (" + ID + " INTEGER PRIMARY KEY NOT NULL, " + FECHA + " TEXT, " + IMPORTE + " REAL, " + FORMA_PAGO + " TEXT, " + NRO_CHEQUE
-			+ " INTEGER DEFAULT 0, " + ID_CLIENTE + " INTEGER NOT NULL, " + ID_USUARIO + " INTEGER NOT NULL, " + BANCO + " TEXT, " + "FOREIGN KEY(" + ID_CLIENTE + ") REFERENCES CLIENTE (id) "
-			+ "FOREIGN KEY(" + ID_USUARIO + ") REFERENCES USUARIO (id))";
+    public static final String CREATE =
+        "CREATE TABLE " + TABLA + " (" +
+        ID + " INTEGER PRIMARY KEY NOT NULL, " +
+        FECHA + " TEXT, " +
+        IMPORTE + " REAL, " +
+        ID_VALOR + " INTEGER DEFAULT 0, " +
+        ITEM + " INTEGER DEFAULT 1, " +
+        FECHA_EMISION + " TEXT, " +
+        NUMERO + " TEXT, " +
+        FECHA_VENCIMIENTO + " TEXT, " +
+        NOTA + " TEXT, " +
+        ID_CLIENTE + " INTEGER NOT NULL, " +
+        ID_USUARIO + " INTEGER NOT NULL, " +
+        "FOREIGN KEY(" + ID_CLIENTE + ") REFERENCES CLIENTE (id) " +
+        "FOREIGN KEY(" + ID_USUARIO + ") REFERENCES USUARIO (id))";
 
-	public CobranzaDAO(Context context) {
-		super(context);
-		this.mDB = getWritableDatabase();
-	}
+    public CobranzaDAO(Context context) {
+        super(context);
+        this.mDB = getWritableDatabase();
+    }
 
-	public void onCreate(SQLiteDatabase db) {
-		super.onCreate(db);
-	}
+    public void onCreate(SQLiteDatabase db) {
+        super.onCreate(db);
+    }
 
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		super.onUpgrade(db, oldVersion, newVersion);
-	}
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        super.onUpgrade(db, oldVersion, newVersion);
+    }
 
-	private void abrirDB() {
-		if (!mDB.isOpen()) {
-			mDB = getWritableDatabase();
-		}
-	}
+    private void abrirDB() {
+        if (!mDB.isOpen()) {
+            mDB = getWritableDatabase();
+        }
+    }
 
-	public List<Cobranza> ObtenerCobros() {
+    public List<Cobranza> ObtenerCobros() {
+        List<Cobranza> cobros = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLA;
+        abrirDB();
+        Cursor cursor = mDB.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            for (int i = 0; i < cursor.getCount(); i++) {
+                cobros.add(cursorACobranza(cursor));
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        mDB.close();
+        return cobros;
+    }
 
-		List<Cobranza> cobros = new ArrayList<Cobranza>();
-		String selectQuery = "SELECT  * FROM " + TABLA;
-		abrirDB();
-		Cursor cursor = mDB.rawQuery(selectQuery, null);
-		// Move to first row
-		cursor.moveToFirst();
-		if (cursor.getCount() > 0) {
-			for (int i = 0; i < cursor.getCount(); i++) {
-				Cobranza cobro = new Cobranza();
-				cobro.setId(cursor.getLong(ID_INDEX));
-				cobro.setFecha(cursor.getString(FECHA_INDEX));
-				cobro.setImporte(cursor.getDouble(IMPORTE_INDEX));
-				cobro.setForma_pago(cursor.getString(FORMA_PAGO_INDEX));
-				cobro.setNro_cheque(cursor.getInt(NRO_CHEQUE_INDEX));
-				cobro.setId_cliente(cursor.getInt(ID_CLIENTE_INDEX));
-				cobro.setId_usuario(cursor.getInt(ID_USUARIO_INDEX));
-				cobro.setBanco(cursor.getString(BANCO_INDEX));
-				
-				cobros.add(cobro);
-				cursor.moveToNext();
-			}
+    public Cobranza obtenerCobro(long id) {
+        String selectQuery = "SELECT * FROM " + TABLA + " WHERE id=" + id;
+        abrirDB();
+        Cursor cursor = mDB.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+        Cobranza cobro = cursorACobranza(cursor);
+        cursor.close();
+        mDB.close();
+        return cobro;
+    }
 
-		}
-		cursor.close();
-		mDB.close();
-		// return user
-		return cobros;
-	}
-	public Cobranza obtenerCobro(long id){
-		String selectQuery = "SELECT  * FROM " + TABLA + " WHERE id=" + id;
-		Cobranza cobro = new Cobranza();
-		abrirDB();
-		Cursor cursor = mDB.rawQuery(selectQuery, null);
-		cursor.moveToFirst();
-
-		cobro.setId(cursor.getLong(ID_INDEX));
-		cobro.setFecha(cursor.getString(FECHA_INDEX));
-		cobro.setImporte(cursor.getDouble(IMPORTE_INDEX));
-		cobro.setForma_pago(cursor.getString(FORMA_PAGO_INDEX));
-		cobro.setNro_cheque(cursor.getInt(NRO_CHEQUE_INDEX));
-		cobro.setId_cliente(cursor.getInt(ID_CLIENTE_INDEX));
-		//cobro.setId_usuario(cursor.getInt(ID_USUARIO_INDEX));
-		cobro.setBanco(cursor.getString(BANCO_INDEX));
-
-		cursor.moveToNext();
-		cursor.close();
-		mDB.close();
-		// return user
-		return cobro;
-
-	}
-
+    private Cobranza cursorACobranza(Cursor cursor) {
+        Cobranza cobro = new Cobranza();
+        cobro.setId(cursor.getLong(ID_INDEX));
+        cobro.setFecha(cursor.getString(FECHA_INDEX));
+        cobro.setImporte(cursor.getDouble(IMPORTE_INDEX));
+        cobro.setId_valor(cursor.getInt(ID_VALOR_INDEX));
+        cobro.setItem(cursor.getInt(ITEM_INDEX));
+        cobro.setFecha_emision(cursor.getString(FECHA_EMISION_INDEX));
+        cobro.setNumero(cursor.getString(NUMERO_INDEX));
+        cobro.setFecha_vencimiento(cursor.getString(FECHA_VENCIMIENTO_INDEX));
+        cobro.setNota(cursor.getString(NOTA_INDEX));
+        cobro.setId_cliente(cursor.getInt(ID_CLIENTE_INDEX));
+        cobro.setId_usuario(cursor.getInt(ID_USUARIO_INDEX));
+        return cobro;
+    }
 }
-

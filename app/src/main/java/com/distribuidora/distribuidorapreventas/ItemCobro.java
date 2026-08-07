@@ -59,13 +59,14 @@ public class ItemCobro extends Activity {
         String dd = sCadena.substring(6,8);
         fecha.setText("Fecha: "+dd+"/"+MM+"/"+yyyy);
 
-        if (cobranza.getForma_pago().equalsIgnoreCase("CHEQUE")) {
-            formaDePago.setText("Forma de pago: "+cobranza.getForma_pago()+" Nº "+cobranza.getNro_cheque());
+        String[] formasPago = getResources().getStringArray(R.array.forma_pago);
+        int idxValor = cobranza.getId_valor() - 1;
+        String formaPagoDesc = (idxValor >= 0 && idxValor < formasPago.length) ? formasPago[idxValor] : "";
+        String formaPagoText = "Forma de pago: " + formaPagoDesc;
+        if (!cobranza.getNumero().isEmpty()) {
+            formaPagoText += " Nº " + cobranza.getNumero();
         }
-        else {
-            formaDePago.setText("Forma de pago: "+cobranza.getForma_pago());
-
-        }
+        formaDePago.setText(formaPagoText);
         saldoCtaCte.setText("Saldo de cuenta corriente: "+"$"+String.valueOf(cliente.getSaldoCtaCte()));
 
         creditoDisponible.setText("Credito disponible: "+"$"+String.valueOf(cliente.getCreditoDiponible()));
