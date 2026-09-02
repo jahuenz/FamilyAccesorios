@@ -19,6 +19,8 @@ import com.distribuidora.model.Cliente;
 import com.distribuidora.model.CondicionVenta;
 import com.distribuidora.model.DetallePedido;
 
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
+
 public class ItemVenta extends Activity{
 
 	long idCabecera;
@@ -63,7 +65,7 @@ public class ItemVenta extends Activity{
 		detalles_Pedido = detallePedidoDAO.obtenerDetalles(idCabecera);
 		
 		nombre.setText("Cliente: "+cliente.getRazonSocial());
-		total.setText("Monto venta: "+"$"+String.valueOf(cabeceraPedido.getTotal()));
+		total.setText("Monto venta: "+"$"+formatoImporte(cabeceraPedido.getTotal()));
 		fecha.setText("Fecha: "+String.valueOf(cabeceraPedido.getFecha("dd/MM/yyyy")));
 		condicionVenta = condicionVentaDAO.obtenerCondicionVenta(cabeceraPedido.getIdCondicionVenta());
 		condicion_venta.setText("Condición venta: "+condicionVenta.getDescripcion());

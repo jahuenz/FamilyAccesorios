@@ -14,6 +14,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
+
 
 public class ItemCobro extends Activity {
 
@@ -52,7 +54,7 @@ public class ItemCobro extends Activity {
         cliente = clienteDAO.obtenerCliente(cobranza.getId_cliente());
 
         nombre.setText("Cliente: "+cliente.getRazonSocial());
-        total.setText("Importe de compra: "+"$"+String.valueOf(cobranza.getImporte()));
+        total.setText("Importe de compra: "+"$"+formatoImporte(cobranza.getImporte()));
         String sCadena = cobranza.getFecha();
         String yyyy = sCadena.substring(0,4);
         String MM = sCadena.substring(4,6);
@@ -67,13 +69,12 @@ public class ItemCobro extends Activity {
             formaPagoText += " Nº " + cobranza.getNumero();
         }
         formaDePago.setText(formaPagoText);
-        saldoCtaCte.setText("Saldo de cuenta corriente: "+"$"+String.valueOf(cliente.getSaldoCtaCte()));
+        saldoCtaCte.setText("Saldo de cuenta corriente: "+"$"+formatoImporte(cliente.getSaldoCtaCte()));
 
-        creditoDisponible.setText("Credito disponible: "+"$"+String.valueOf(cliente.getCreditoDiponible()));
+        creditoDisponible.setText("Credito disponible: "+"$"+formatoImporte(cliente.getCreditoDiponible()));
 
 
 
     }
-
 
 }

@@ -46,6 +46,8 @@ import com.distribuidora.model.Cobranza;
 import com.distribuidora.utils.Preferencias;
 import com.distribuidora.utils.VentanaDialogo;
 
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
+
 public class Cobranzas extends Activity {
 
     // id_valor: 1=Efectivo, 2=Cheque físico, 3=Transferencia Family,
@@ -119,7 +121,7 @@ public class Cobranzas extends Activity {
         configurarDatePickerVencimiento();
 
         txtNombreCliente.setText(cliente.getRazonSocial());
-        txtSaldoAdeudado.setText(String.valueOf(cliente.getSaldoCtaCte()));
+        txtSaldoAdeudado.setText(formatoImporte(cliente.getSaldoCtaCte()));
 
         spnFormaPago.setEnabled(false);
 

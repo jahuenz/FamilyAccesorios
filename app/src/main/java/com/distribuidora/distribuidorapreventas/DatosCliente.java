@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.distribuidora.dao.ClienteDAO;
 import com.distribuidora.model.Cliente;
 
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
+
 public class DatosCliente extends Activity{
 	
 	ClienteDAO clienteDAO;
@@ -45,8 +47,8 @@ public class DatosCliente extends Activity{
 		
 		id.setText("ID Cliente: "+String.valueOf(cliente.getId()));
 		razon_social.setText("Razón social: "+cliente.getRazonSocial());
-		min_cobranza.setText("Credito disponible: $"+String.valueOf(cliente.getCreditoDiponible()));
-		saldo_ctacte.setText("Saldo cta cte: $"+String.valueOf(cliente.getSaldoCtaCte()));
+		min_cobranza.setText("Credito disponible: $"+formatoImporte(cliente.getCreditoDiponible()));
+		saldo_ctacte.setText("Saldo cta cte: $"+formatoImporte(cliente.getSaldoCtaCte()));
 		cat_contribuyente.setText("Categoría contribuyente: "+cliente.getCategoriaContribuyente());
 		localidad.setText("Localidad: "+cliente.getLocalidad());
 		provincia.setText("Provincia: "+cliente.getProvincia());
@@ -65,9 +67,7 @@ public class DatosCliente extends Activity{
 				startActivity(intent);
 			}
 		});
-		
+
 	}
 
-	
-	
 }
