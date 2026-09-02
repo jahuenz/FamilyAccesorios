@@ -1,7 +1,6 @@
 package com.distribuidora.distribuidorapreventas;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +38,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import com.distribuidora.dao.CabeceraPedidoDAO;
 import com.distribuidora.dao.ClienteDAO;
@@ -521,10 +522,12 @@ public class PedidoCabecera extends Activity {
 		String directorio = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() +"/comprobantes/";
 		Log.e("Directorio", directorio);
 		File folder = new File(directorio);
-		if(!folder.exists()){
-			folder.mkdirs();
-		}		
-		
+		if (!folder.exists() && !folder.mkdirs()) {
+			FirebaseCrashlytics.getInstance().recordException(new IOException("No se pudo crear la carpeta de comprobantes: " + directorio));
+			new VentanaDialogo(this, "Error", "No se pudo crear la carpeta de comprobantes. Revise el almacenamiento del teléfono.", false).mostrar();
+			return;
+		}
+
 		int itemsVenta = detalles_Pedido.size();
 		Log.e("itemsVenta", String.valueOf(itemsVenta));
 		
@@ -607,20 +610,20 @@ public class PedidoCabecera extends Activity {
 	    cs.drawText("TOTAL", x_coord, getSizeInPx(height+i), tPaint);
 	    cs.drawText("$" + cabecera.getTotal(), getSizeInPx(275.0f), getSizeInPx(height+i), tPaint);
 	    
+	    File file = new File(directorio, cliente.getRazonSocial()+"-"+cabeceraPedido.getFecha("dd-MM-yyyy_HHmm")+".jpg");
 	    try {
-	    	File cmp = new File(directorio, cliente.getRazonSocial()+"-"+cabeceraPedido.getFecha("dd-MM-yyyy_HHmm")+".jpg");
-	    	try {
-				cmp.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	    	FileOutputStream fOut = new FileOutputStream(cmp);
-	        bmp.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-	    } catch (FileNotFoundException e) {
-	        e.printStackTrace();
+	    	file.createNewFile();
+	    	try (FileOutputStream fOut = new FileOutputStream(file)) {
+	    		bmp.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+	    		fOut.flush();
+	    	}
+	    } catch (IOException e) {
+	    	Log.e("Comprobante", "Error al guardar el comprobante", e);
+	    	FirebaseCrashlytics.getInstance().recordException(e);
+	    	new VentanaDialogo(this, "Error", "No se pudo guardar el comprobante. Revise el almacenamiento del teléfono.", false).mostrar();
+	    	return;
 	    }
-	    
-	    File file = new File(directorio+cliente.getRazonSocial()+"-"+cabeceraPedido.getFecha("dd-MM-yyyy_HHmm")+".jpg");
+
 		Uri photoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
 	    Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

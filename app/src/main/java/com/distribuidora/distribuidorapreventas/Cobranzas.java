@@ -36,6 +36,8 @@ import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import com.distribuidora.dao.ClienteDAO;
 import com.distribuidora.dao.CobranzaDAO;
 import com.distribuidora.dao.MovimientoDAO;
@@ -310,7 +312,11 @@ public class Cobranzas extends Activity {
         String directorio = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/comprobantes/";
         Log.e("Directorio", directorio);
         File folder = new File(directorio);
-        if (!folder.exists()) folder.mkdirs();
+        if (!folder.exists() && !folder.mkdirs()) {
+            FirebaseCrashlytics.getInstance().recordException(new IOException("No se pudo crear la carpeta de comprobantes: " + directorio));
+            new VentanaDialogo(this, "Error", "No se pudo crear la carpeta de comprobantes. Revise el almacenamiento del teléfono.", false).mostrar();
+            return;
+        }
 
         src = BitmapFactory.decodeResource(getResources(), R.drawable.comprobante35);
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
@@ -364,16 +370,20 @@ public class Cobranzas extends Activity {
         cs.drawText("TOTAL", x_coord, getSizeInPx(height + y), tPaint);
         cs.drawText("$" + cobro.getImporte(), getSizeInPx(275.0f), getSizeInPx(height + y), tPaint);
 
+        File file = new File(directorio + cliente.getRazonSocial() + "-" + cobro.getFecha("dd-MM-yyyy_HHmm") + ".jpg");
         try {
-            File cmp = new File(directorio + cliente.getRazonSocial() + "-" + cobro.getFecha("dd-MM-yyyy_HHmm") + ".jpg");
-            cmp.createNewFile();
-            FileOutputStream fOut = new FileOutputStream(cmp);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            file.createNewFile();
+            try (FileOutputStream fOut = new FileOutputStream(file)) {
+                bmp.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                fOut.flush();
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("Comprobante", "Error al guardar el comprobante", e);
+            FirebaseCrashlytics.getInstance().recordException(e);
+            new VentanaDialogo(this, "Error", "No se pudo guardar el comprobante. Revise el almacenamiento del teléfono.", false).mostrar();
+            return;
         }
 
-        File file = new File(directorio + cliente.getRazonSocial() + "-" + cobro.getFecha("dd-MM-yyyy_HHmm") + ".jpg");
         Uri photoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
