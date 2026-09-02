@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.distribuidora.distribuidorapreventas.R;
 import com.distribuidora.dto.PedidoClienteDTO;
 
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
+
 public class PedidosAdapter extends BaseAdapter{
 	
 	private Context context;
@@ -57,8 +59,8 @@ public class PedidosAdapter extends BaseAdapter{
 		holder.fecha.setText(String.valueOf(pedidoCliente.getFecha()));		
 		holder.cliente.setText(pedidoCliente.getNombreCliente());
 		holder.tipo.setText(pedidoCliente.getTipoPedido());
-		holder.entrega.setText(String.valueOf(pedidoCliente.getImporteEntrega()));
-		holder.total.setText(String.valueOf(pedidoCliente.getTotal()));
+		holder.entrega.setText(formatoImporte(pedidoCliente.getImporteEntrega()));
+		holder.total.setText(formatoImporte(pedidoCliente.getTotal()));
 		return convertView;
 	}
 

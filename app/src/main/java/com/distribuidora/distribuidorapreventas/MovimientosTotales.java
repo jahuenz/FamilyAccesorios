@@ -8,6 +8,8 @@ import com.distribuidora.dao.CabeceraPedidoDAO;
 import com.distribuidora.dao.DetallePedidoDAO;
 import com.distribuidora.distribuidorapreventas.R;
 
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
+
 public class MovimientosTotales extends Activity{
 
 	CabeceraPedidoDAO cabeceraPedidoDAO;
@@ -35,10 +37,10 @@ public class MovimientosTotales extends Activity{
 		efectivo_cobrado = (TextView) findViewById(R.id.efectivo_cobrado);
 		
 		pedidos_realizados.setText(String.valueOf(cabeceraPedidoDAO.getCantidadVentas()));
-		pedido_mayor.setText(String.valueOf(cabeceraPedidoDAO.getMaxVenta()));
-		pedido_menor.setText(String.valueOf(cabeceraPedidoDAO.getMinVenta()));
-		//pedido_promedio.setText(String.valueOf(cabeceraPedidoDAO.getPromedioVenta()));
-		total.setText(String.valueOf(cabeceraPedidoDAO.getTotalVentas()));
-		efectivo_cobrado.setText(String.valueOf(cabeceraPedidoDAO.getTotalVentasEnEfectivo()));
+		pedido_mayor.setText(formatoImporte(cabeceraPedidoDAO.getMaxVenta()));
+		pedido_menor.setText(formatoImporte(cabeceraPedidoDAO.getMinVenta()));
+		//pedido_promedio.setText(formatoImporte(cabeceraPedidoDAO.getPromedioVenta()));
+		total.setText(formatoImporte(cabeceraPedidoDAO.getTotalVentas()));
+		efectivo_cobrado.setText(formatoImporte(cabeceraPedidoDAO.getTotalVentasEnEfectivo()));
 	}
 }

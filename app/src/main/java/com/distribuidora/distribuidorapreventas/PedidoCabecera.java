@@ -59,6 +59,8 @@ import com.distribuidora.utils.ComprobanteStorage;
 import com.distribuidora.utils.Preferencias;
 import com.distribuidora.utils.VentanaDialogo;
 
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
+
 public class PedidoCabecera extends Activity {
 
 	static final double RECARGO_30_DIAS = 0.05;
@@ -155,9 +157,9 @@ public class PedidoCabecera extends Activity {
 
 		txt_NroCliente.setText(String.valueOf(cliente.getId()));
 		txt_NombreCliente.setText(cliente.getRazonSocial());
-		txt_SubTotalPedido.setText(String.valueOf(detallePedidoTemporalDAO.obtenerTotalPedidos(idCabeceraPedido)));
+		txt_SubTotalPedido.setText(formatoImporte(detallePedidoTemporalDAO.obtenerTotalPedidos(idCabeceraPedido)));
 		double relleno = Double.parseDouble(txt_SubTotalPedido.getText().toString());
-		txt_TotalPedido.setText(String.valueOf(redondearA2Decimales(relleno)));
+		txt_TotalPedido.setText(formatoImporte(relleno));
 
 
 		// Actualizo el credito a nivel de objetos disponible de acuerdo al
@@ -170,7 +172,7 @@ public class PedidoCabecera extends Activity {
 		}
 
 
-		txt_credito_disponible.setText(String.valueOf(redondearA2Decimales(cliente.getCreditoDiponible())));
+		txt_credito_disponible.setText(formatoImporte(cliente.getCreditoDiponible()));
 
 		String cheque_list[] = {"Ingrese los días", "30" , "60"};
 
@@ -203,7 +205,7 @@ public class PedidoCabecera extends Activity {
 					txt_cantDias.setVisibility(View.GONE);
 					spn_cond_cheque.setVisibility(View.GONE);
 					double subTotal = Double.parseDouble(txt_SubTotalPedido.getText().toString());
-					txt_TotalPedido.setText(String.valueOf(redondearA2Decimales(subTotal)));
+					txt_TotalPedido.setText(formatoImporte(subTotal));
 					txt_recargo.setText("0");
 					spn_cond_cheque.setSelection(0);
 
@@ -213,7 +215,7 @@ public class PedidoCabecera extends Activity {
 					txt_cantDias.setVisibility(View.GONE);
 					spn_cond_cheque.setVisibility(View.GONE);
 					double subTotal = Double.parseDouble(txt_SubTotalPedido.getText().toString());
-					txt_TotalPedido.setText(String.valueOf(redondearA2Decimales(subTotal)));
+					txt_TotalPedido.setText(formatoImporte(subTotal));
 					txt_recargo.setText("0");
 				}
 
@@ -265,17 +267,17 @@ public class PedidoCabecera extends Activity {
 				String cantidadDiasSeleccionados = spn_cond_cheque.getSelectedItem().toString();
 
 				if(cantidadDiasSeleccionados.equals("Ingrese los días")){
-					txt_recargo.setText(String.valueOf(redondearA2Decimales(0.0)));
+					txt_recargo.setText(formatoImporte(0.0));
 					actualizarTotal();
 				}
 				if(cantidadDiasSeleccionados.equals("30")){
 					double subTotal = Double.parseDouble(txt_SubTotalPedido.getText().toString());
-					txt_recargo.setText(String.valueOf(redondearA2Decimales(subTotal*RECARGO_30_DIAS)));
+					txt_recargo.setText(formatoImporte(subTotal*RECARGO_30_DIAS));
 					actualizarTotal();
 				}
 				if(cantidadDiasSeleccionados.equals("60")){
 					double subTotal = Double.parseDouble(txt_SubTotalPedido.getText().toString());
-					txt_recargo.setText(String.valueOf(redondearA2Decimales(subTotal*RECARGO_60_DIAS)));
+					txt_recargo.setText(formatoImporte(subTotal*RECARGO_60_DIAS));
 					actualizarTotal();
 				}
 
@@ -673,10 +675,10 @@ public class PedidoCabecera extends Activity {
 	private void actualizarTotal() {
 
 		double subTotal = detallePedidoTemporalDAO.obtenerTotalPedidos(idCabeceraPedido);
-		txt_SubTotalPedido.setText(String.valueOf(subTotal));
+		txt_SubTotalPedido.setText(formatoImporte(subTotal));
 		double recargo = Double.parseDouble(txt_recargo.getText().toString());
 		double total = subTotal+recargo;
-		txt_TotalPedido.setText(String.valueOf(redondearA2Decimales(total)));
+		txt_TotalPedido.setText(formatoImporte(total));
 
 	}
 
