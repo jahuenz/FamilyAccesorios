@@ -1,7 +1,5 @@
 package com.distribuidora.distribuidorapreventas;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +20,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -36,8 +33,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import androidx.core.content.FileProvider;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -53,6 +48,7 @@ import com.distribuidora.model.CabeceraPedido;
 import com.distribuidora.model.Cliente;
 import com.distribuidora.model.DetallePedido;
 import com.distribuidora.model.Stock;
+import com.distribuidora.utils.ComprobanteStorage;
 import com.distribuidora.utils.Preferencias;
 import com.distribuidora.utils.VentanaDialogo;
 
@@ -330,14 +326,6 @@ public class Devoluciones extends Activity {
 		CabeceraPedido cabecera = cabeceraPedidoDAO.obtenerCabeceraPedido(idCabeceraPedido);
 		detalles_Pedido = detallePedidoDAO.obtenerDetalles(idCabeceraPedido);
 
-		String directorio = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() +"/comprobantes/";
-		Log.e("Directorio", directorio);
-		File folder = new File(directorio);
-		if (!folder.exists() && !folder.mkdirs()) {
-			FirebaseCrashlytics.getInstance().recordException(new IOException("No se pudo crear la carpeta de comprobantes: " + directorio));
-			new VentanaDialogo(this, "Error", "No se pudo crear la carpeta de comprobantes. Revise el almacenamiento del teléfono.", false).mostrar();
-			return;
-		}
 
 		int itemsVenta = detalles_Pedido.size();
 		Log.e("itemsVenta", String.valueOf(itemsVenta));
@@ -415,13 +403,10 @@ public class Devoluciones extends Activity {
 	    cs.drawText("TOTAL", x_coord, getSizeInPx(height+i), tPaint);
 	    cs.drawText("$" + cabecera.getTotal(), getSizeInPx(275.0f), getSizeInPx(height+i), tPaint);
 	    
-	    File file = new File(directorio+cliente.getRazonSocial()+"-"+cabecera.getFecha("dd-MM-yyyy_HHmm")+".jpg");
+	    String nombreArchivo = cliente.getRazonSocial()+"-"+cabecera.getFecha("dd-MM-yyyy_HHmm")+".jpg";
+	    Uri photoURI;
 	    try {
-	        file.createNewFile();
-	        try (FileOutputStream fOut = new FileOutputStream(file)) {
-	            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-	            fOut.flush();
-	        }
+	        photoURI = ComprobanteStorage.guardarComprobante(getApplicationContext(), bmp, nombreArchivo);
 	    } catch (IOException e) {
 	        Log.e("Comprobante", "Error al guardar el comprobante", e);
 	        FirebaseCrashlytics.getInstance().recordException(e);
@@ -429,7 +414,6 @@ public class Devoluciones extends Activity {
 	        return;
 	    }
 
-		Uri photoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
 	    Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		intent.setDataAndType(photoURI, "image/jpeg");
