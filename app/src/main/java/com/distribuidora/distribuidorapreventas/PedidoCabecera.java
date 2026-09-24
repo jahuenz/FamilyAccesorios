@@ -1,8 +1,5 @@
 package com.distribuidora.distribuidorapreventas;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,7 +21,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -38,7 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.core.content.FileProvider;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import com.distribuidora.dao.CabeceraPedidoDAO;
 import com.distribuidora.dao.ClienteDAO;
@@ -59,8 +55,11 @@ import com.distribuidora.model.DetallePedidoTemporal;
 import com.distribuidora.model.Producto;
 import com.distribuidora.model.TipoPedido;
 import com.distribuidora.model.Usuario;
+import com.distribuidora.utils.ComprobanteStorage;
 import com.distribuidora.utils.Preferencias;
 import com.distribuidora.utils.VentanaDialogo;
+
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
 
 public class PedidoCabecera extends Activity {
 
@@ -158,9 +157,9 @@ public class PedidoCabecera extends Activity {
 
 		txt_NroCliente.setText(String.valueOf(cliente.getId()));
 		txt_NombreCliente.setText(cliente.getRazonSocial());
-		txt_SubTotalPedido.setText(String.valueOf(detallePedidoTemporalDAO.obtenerTotalPedidos(idCabeceraPedido)));
+		txt_SubTotalPedido.setText(formatoImporte(detallePedidoTemporalDAO.obtenerTotalPedidos(idCabeceraPedido)));
 		double relleno = Double.parseDouble(txt_SubTotalPedido.getText().toString());
-		txt_TotalPedido.setText(String.valueOf(redondearA2Decimales(relleno)));
+		txt_TotalPedido.setText(formatoImporte(relleno));
 
 
 		// Actualizo el credito a nivel de objetos disponible de acuerdo al
@@ -173,7 +172,7 @@ public class PedidoCabecera extends Activity {
 		}
 
 
-		txt_credito_disponible.setText(String.valueOf(redondearA2Decimales(cliente.getCreditoDiponible())));
+		txt_credito_disponible.setText(formatoImporte(cliente.getCreditoDiponible()));
 
 		String cheque_list[] = {"Ingrese los días", "30" , "60"};
 
@@ -206,7 +205,7 @@ public class PedidoCabecera extends Activity {
 					txt_cantDias.setVisibility(View.GONE);
 					spn_cond_cheque.setVisibility(View.GONE);
 					double subTotal = Double.parseDouble(txt_SubTotalPedido.getText().toString());
-					txt_TotalPedido.setText(String.valueOf(redondearA2Decimales(subTotal)));
+					txt_TotalPedido.setText(formatoImporte(subTotal));
 					txt_recargo.setText("0");
 					spn_cond_cheque.setSelection(0);
 
@@ -216,7 +215,7 @@ public class PedidoCabecera extends Activity {
 					txt_cantDias.setVisibility(View.GONE);
 					spn_cond_cheque.setVisibility(View.GONE);
 					double subTotal = Double.parseDouble(txt_SubTotalPedido.getText().toString());
-					txt_TotalPedido.setText(String.valueOf(redondearA2Decimales(subTotal)));
+					txt_TotalPedido.setText(formatoImporte(subTotal));
 					txt_recargo.setText("0");
 				}
 
@@ -268,17 +267,17 @@ public class PedidoCabecera extends Activity {
 				String cantidadDiasSeleccionados = spn_cond_cheque.getSelectedItem().toString();
 
 				if(cantidadDiasSeleccionados.equals("Ingrese los días")){
-					txt_recargo.setText(String.valueOf(redondearA2Decimales(0.0)));
+					txt_recargo.setText(formatoImporte(0.0));
 					actualizarTotal();
 				}
 				if(cantidadDiasSeleccionados.equals("30")){
 					double subTotal = Double.parseDouble(txt_SubTotalPedido.getText().toString());
-					txt_recargo.setText(String.valueOf(redondearA2Decimales(subTotal*RECARGO_30_DIAS)));
+					txt_recargo.setText(formatoImporte(subTotal*RECARGO_30_DIAS));
 					actualizarTotal();
 				}
 				if(cantidadDiasSeleccionados.equals("60")){
 					double subTotal = Double.parseDouble(txt_SubTotalPedido.getText().toString());
-					txt_recargo.setText(String.valueOf(redondearA2Decimales(subTotal*RECARGO_60_DIAS)));
+					txt_recargo.setText(formatoImporte(subTotal*RECARGO_60_DIAS));
 					actualizarTotal();
 				}
 
@@ -518,13 +517,6 @@ public class PedidoCabecera extends Activity {
 		CabeceraPedido cabecera = cabeceraPedidoDAO.obtenerCabeceraPedido(idCabeceraPedido);
 		detalles_Pedido = detallePedidoDAO.obtenerDetalles(idCabeceraPedido);
 		
-		String directorio = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() +"/comprobantes/";
-		Log.e("Directorio", directorio);
-		File folder = new File(directorio);
-		if(!folder.exists()){
-			folder.mkdirs();
-		}		
-		
 		int itemsVenta = detalles_Pedido.size();
 		Log.e("itemsVenta", String.valueOf(itemsVenta));
 		
@@ -607,21 +599,17 @@ public class PedidoCabecera extends Activity {
 	    cs.drawText("TOTAL", x_coord, getSizeInPx(height+i), tPaint);
 	    cs.drawText("$" + cabecera.getTotal(), getSizeInPx(275.0f), getSizeInPx(height+i), tPaint);
 	    
+	    String nombreArchivo = cliente.getRazonSocial()+"-"+cabeceraPedido.getFecha("dd-MM-yyyy_HHmm")+".jpg";
+	    Uri photoURI;
 	    try {
-	    	File cmp = new File(directorio, cliente.getRazonSocial()+"-"+cabeceraPedido.getFecha("dd-MM-yyyy_HHmm")+".jpg");
-	    	try {
-				cmp.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	    	FileOutputStream fOut = new FileOutputStream(cmp);
-	        bmp.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-	    } catch (FileNotFoundException e) {
-	        e.printStackTrace();
+	    	photoURI = ComprobanteStorage.guardarComprobante(getApplicationContext(), bmp, nombreArchivo);
+	    } catch (IOException e) {
+	    	Log.e("Comprobante", "Error al guardar el comprobante", e);
+	    	FirebaseCrashlytics.getInstance().recordException(e);
+	    	new VentanaDialogo(this, "Error", "No se pudo guardar el comprobante. Revise el almacenamiento del teléfono.", false).mostrar();
+	    	return;
 	    }
-	    
-	    File file = new File(directorio+cliente.getRazonSocial()+"-"+cabeceraPedido.getFecha("dd-MM-yyyy_HHmm")+".jpg");
-		Uri photoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
+
 	    Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 	    intent.setDataAndType(photoURI, "image/jpeg");
@@ -687,10 +675,10 @@ public class PedidoCabecera extends Activity {
 	private void actualizarTotal() {
 
 		double subTotal = detallePedidoTemporalDAO.obtenerTotalPedidos(idCabeceraPedido);
-		txt_SubTotalPedido.setText(String.valueOf(subTotal));
+		txt_SubTotalPedido.setText(formatoImporte(subTotal));
 		double recargo = Double.parseDouble(txt_recargo.getText().toString());
 		double total = subTotal+recargo;
-		txt_TotalPedido.setText(String.valueOf(redondearA2Decimales(total)));
+		txt_TotalPedido.setText(formatoImporte(total));
 
 	}
 

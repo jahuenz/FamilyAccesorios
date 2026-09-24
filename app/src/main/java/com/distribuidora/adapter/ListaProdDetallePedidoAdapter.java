@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.distribuidora.distribuidorapreventas.R;
 import com.distribuidora.model.DetallePedidoTemporal;
 
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
+
 public class ListaProdDetallePedidoAdapter extends ArrayAdapter<DetallePedidoTemporal>{
 	
 	private Context context;
@@ -60,7 +62,7 @@ public class ListaProdDetallePedidoAdapter extends ArrayAdapter<DetallePedidoTem
 		holder.cantidad.setText(String.valueOf(detalle.getCantidad()));
 		holder.precio_unitario.setText(String.valueOf(detalle.getPrecioUnitario()));
 		holder.desc_rec.setText(String.valueOf(detalle.getPorcentajeDescuento()));
-		holder.subtotal.setText(String.valueOf(detalle.getTotal()));
+		holder.subtotal.setText(formatoImporte(detalle.getTotal()));
 		return convertView;
 	}
 

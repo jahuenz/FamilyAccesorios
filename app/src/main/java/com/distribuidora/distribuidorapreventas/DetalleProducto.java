@@ -32,6 +32,8 @@ import android.widget.Toast;
 
 import com.distribuidora.utils.Preferencias;
 
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
+
 public class DetalleProducto extends Activity {
 
 	EditText edt_codigo;
@@ -136,7 +138,7 @@ public class DetalleProducto extends Activity {
 		edt_precio_unitario.setText(String.valueOf(detallePedidoTemporal.getPrecioUnitario()));
 		txt_descuento_porcentaje.setText(String.valueOf(detallePedidoTemporal.getPorcentajeDescuento() * 100));
 		txt_precio_con_descuento.setText(String.valueOf(detallePedidoTemporal.getPrecioUnitarioConDescuento()));
-		total.setText(String.valueOf(detallePedidoTemporal.getTotal()));
+		total.setText(formatoImporte(detallePedidoTemporal.getTotal()));
 
 		/*
 		 * if(!"".equals(edt_cantidad.getText().toString())){ int
@@ -322,7 +324,7 @@ public class DetalleProducto extends Activity {
 						} else {
 							edt_cantidad.setText("");
 						}
-						total.setText(String.valueOf(detallePedidoTemporal.getTotal()));
+						total.setText(formatoImporte(detallePedidoTemporal.getTotal()));
 
 						/*
 						 * String cantidadString =

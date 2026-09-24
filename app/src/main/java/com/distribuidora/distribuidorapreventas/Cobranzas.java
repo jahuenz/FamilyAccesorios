@@ -1,8 +1,5 @@
 package com.distribuidora.distribuidorapreventas;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,7 +19,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,7 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.content.FileProvider;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import com.distribuidora.dao.ClienteDAO;
 import com.distribuidora.dao.CobranzaDAO;
@@ -43,8 +39,11 @@ import com.distribuidora.dao.RutaDAO;
 import com.distribuidora.dao.TransaccionDAO;
 import com.distribuidora.model.Cliente;
 import com.distribuidora.model.Cobranza;
+import com.distribuidora.utils.ComprobanteStorage;
 import com.distribuidora.utils.Preferencias;
 import com.distribuidora.utils.VentanaDialogo;
+
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
 
 public class Cobranzas extends Activity {
 
@@ -119,7 +118,7 @@ public class Cobranzas extends Activity {
         configurarDatePickerVencimiento();
 
         txtNombreCliente.setText(cliente.getRazonSocial());
-        txtSaldoAdeudado.setText(String.valueOf(cliente.getSaldoCtaCte()));
+        txtSaldoAdeudado.setText(formatoImporte(cliente.getSaldoCtaCte()));
 
         spnFormaPago.setEnabled(false);
 
@@ -307,11 +306,6 @@ public class Cobranzas extends Activity {
     private void generarTicket() {
         Cobranza cobro = cobranzaDAO.obtenerCobro(idCobranza);
 
-        String directorio = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/comprobantes/";
-        Log.e("Directorio", directorio);
-        File folder = new File(directorio);
-        if (!folder.exists()) folder.mkdirs();
-
         src = BitmapFactory.decodeResource(getResources(), R.drawable.comprobante35);
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
         Bitmap bmp = Bitmap.createBitmap(src.getWidth(), src.getHeight(), conf);
@@ -364,17 +358,17 @@ public class Cobranzas extends Activity {
         cs.drawText("TOTAL", x_coord, getSizeInPx(height + y), tPaint);
         cs.drawText("$" + cobro.getImporte(), getSizeInPx(275.0f), getSizeInPx(height + y), tPaint);
 
+        String nombreArchivo = cliente.getRazonSocial() + "-" + cobro.getFecha("dd-MM-yyyy_HHmm") + ".jpg";
+        Uri photoURI;
         try {
-            File cmp = new File(directorio + cliente.getRazonSocial() + "-" + cobro.getFecha("dd-MM-yyyy_HHmm") + ".jpg");
-            cmp.createNewFile();
-            FileOutputStream fOut = new FileOutputStream(cmp);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            photoURI = ComprobanteStorage.guardarComprobante(getApplicationContext(), bmp, nombreArchivo);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("Comprobante", "Error al guardar el comprobante", e);
+            FirebaseCrashlytics.getInstance().recordException(e);
+            new VentanaDialogo(this, "Error", "No se pudo guardar el comprobante. Revise el almacenamiento del teléfono.", false).mostrar();
+            return;
         }
 
-        File file = new File(directorio + cliente.getRazonSocial() + "-" + cobro.getFecha("dd-MM-yyyy_HHmm") + ".jpg");
-        Uri photoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(photoURI, "image/jpeg");

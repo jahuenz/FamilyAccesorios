@@ -19,6 +19,8 @@ import com.distribuidora.model.DetallePedido;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
+
 
 public class ItemDevolucion extends Activity {
 
@@ -65,7 +67,7 @@ public class ItemDevolucion extends Activity {
         detalles_Pedido = detallePedidoDAO.obtenerDetalles(idCabecera);
 
         nombre.setText("Cliente: "+cliente.getRazonSocial());
-        total.setText("Monto devolucion: "+"$"+String.valueOf(cabeceraPedido.getTotal()));
+        total.setText("Monto devolucion: "+"$"+formatoImporte(cabeceraPedido.getTotal()));
         fecha.setText("Fecha: "+String.valueOf(cabeceraPedido.getFecha("dd/MM/yyyy")));
 
         devolucionListaItemsAdapter = new DevolucionListaItemsAdapter(this.getBaseContext(), detalles_Pedido);

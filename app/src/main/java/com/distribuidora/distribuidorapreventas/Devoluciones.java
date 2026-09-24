@@ -1,8 +1,6 @@
 package com.distribuidora.distribuidorapreventas;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +20,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -37,7 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.core.content.FileProvider;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import com.distribuidora.adapter.ListaDevolucionesAdapter;
 import com.distribuidora.dao.CabeceraPedidoDAO;
@@ -51,6 +48,7 @@ import com.distribuidora.model.CabeceraPedido;
 import com.distribuidora.model.Cliente;
 import com.distribuidora.model.DetallePedido;
 import com.distribuidora.model.Stock;
+import com.distribuidora.utils.ComprobanteStorage;
 import com.distribuidora.utils.Preferencias;
 import com.distribuidora.utils.VentanaDialogo;
 
@@ -328,12 +326,6 @@ public class Devoluciones extends Activity {
 		CabeceraPedido cabecera = cabeceraPedidoDAO.obtenerCabeceraPedido(idCabeceraPedido);
 		detalles_Pedido = detallePedidoDAO.obtenerDetalles(idCabeceraPedido);
 
-		String directorio = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() +"/comprobantes/";
-		Log.e("Directorio", directorio);
-		File folder = new File(directorio);
-		if(!folder.exists()){
-			folder.mkdirs();
-		}
 
 		int itemsVenta = detalles_Pedido.size();
 		Log.e("itemsVenta", String.valueOf(itemsVenta));
@@ -411,17 +403,17 @@ public class Devoluciones extends Activity {
 	    cs.drawText("TOTAL", x_coord, getSizeInPx(height+i), tPaint);
 	    cs.drawText("$" + cabecera.getTotal(), getSizeInPx(275.0f), getSizeInPx(height+i), tPaint);
 	    
-	    // 15f is to put space between top edge and the text, if you want to change it, you can
+	    String nombreArchivo = cliente.getRazonSocial()+"-"+cabecera.getFecha("dd-MM-yyyy_HHmm")+".jpg";
+	    Uri photoURI;
 	    try {
-	        bmp.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(new File(directorio+cliente.getRazonSocial()+"-"+cabecera.getFecha("dd-MM-yyyy_HHmm")+".jpg")));
-	        // dest is Bitmap, if you want to preview the final image, you can display it on screen also before saving
-	    } catch (FileNotFoundException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
+	        photoURI = ComprobanteStorage.guardarComprobante(getApplicationContext(), bmp, nombreArchivo);
+	    } catch (IOException e) {
+	        Log.e("Comprobante", "Error al guardar el comprobante", e);
+	        FirebaseCrashlytics.getInstance().recordException(e);
+	        new VentanaDialogo(this, "Error", "No se pudo guardar el comprobante. Revise el almacenamiento del teléfono.", false).mostrar();
+	        return;
 	    }
-	    
-	    File file = new File(directorio+cliente.getRazonSocial()+"-"+cabecera.getFecha("dd-MM-yyyy_HHmm")+".jpg");
-		Uri photoURI = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
+
 	    Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		intent.setDataAndType(photoURI, "image/jpeg");
