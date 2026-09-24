@@ -542,7 +542,7 @@ public class PedidoCabecera extends Activity {
 		
 		String numComprobante = "Num. Comprobate: "+cabecera.getId();
 		String clienteString = "Cliente: "+cliente.getRazonSocial();
-		String montoVenta= "Monto total: $"+ cabecera.getTotal();
+		String montoVenta= "Monto total: $"+ formatoImporte(cabecera.getTotal());
 		String fecha = "Fecha: "+ cabeceraPedido.getFecha("dd/MM/yyyy");
 		String condicionVta = "Condición venta: "+ spn_cond_venta.getSelectedItem().toString();
 		String divisor = "-----------------------------------------------------------------------------------------------------------";
@@ -597,7 +597,7 @@ public class PedidoCabecera extends Activity {
 	    i = i + 10f;
 	    
 	    cs.drawText("TOTAL", x_coord, getSizeInPx(height+i), tPaint);
-	    cs.drawText("$" + cabecera.getTotal(), getSizeInPx(275.0f), getSizeInPx(height+i), tPaint);
+	    cs.drawText("$" + formatoImporte(cabecera.getTotal()), getSizeInPx(275.0f), getSizeInPx(height+i), tPaint);
 	    
 	    String nombreArchivo = cliente.getRazonSocial()+"-"+cabeceraPedido.getFecha("dd-MM-yyyy_HHmm")+".jpg";
 	    Uri photoURI;

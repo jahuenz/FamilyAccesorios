@@ -312,7 +312,7 @@ public class Cobranzas extends Activity {
 
         String numComprobante = "Num. Comprobante: " + cobro.getId();
         String clienteStr     = "Cliente: " + cliente.getRazonSocial();
-        String montoVenta     = "Monto total: $" + cobro.getImporte();
+        String montoVenta     = "Monto total: $" + formatoImporte(cobro.getImporte());
         String fecha          = "Fecha: " + cobro.getFecha("dd/MM/yyyy");
         String formaPagoStr   = "Forma de pago: " + spnFormaPago.getSelectedItem().toString();
         String divisor        = "-----------------------------------------------------------------------------------------------------------";
@@ -356,7 +356,7 @@ public class Cobranzas extends Activity {
         y += 15f;
 
         cs.drawText("TOTAL", x_coord, getSizeInPx(height + y), tPaint);
-        cs.drawText("$" + cobro.getImporte(), getSizeInPx(275.0f), getSizeInPx(height + y), tPaint);
+        cs.drawText("$" + formatoImporte(cobro.getImporte()), getSizeInPx(275.0f), getSizeInPx(height + y), tPaint);
 
         String nombreArchivo = cliente.getRazonSocial() + "-" + cobro.getFecha("dd-MM-yyyy_HHmm") + ".jpg";
         Uri photoURI;
