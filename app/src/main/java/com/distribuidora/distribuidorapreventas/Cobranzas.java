@@ -48,13 +48,14 @@ import static com.distribuidora.utils.FormatoUtils.formatoImporte;
 public class Cobranzas extends Activity {
 
     // id_valor: 1=Efectivo, 2=Cheque físico, 3=Transferencia Family,
-    //           4=Transferencia Tercero, 5=eCheq Family, 6=eCheq Terceros
+    //           4=Transferencia Tercero, 5=eCheq Family, 6=eCheq Terceros, 7=Transferencia Marcos
     private static final int EFECTIVO             = 1;
     private static final int CHEQUE_FISICO        = 2;
     private static final int TRANSFERENCIA_FAMILY = 3;
     private static final int TRANSFERENCIA_TERCERO = 4;
     private static final int ECHEQ_FAMILY         = 5;
     private static final int ECHEQ_TERCERO        = 6;
+    private static final int TRANSFERENCIA_MARCOS = 7;
 
     private ClienteDAO clienteDAO;
     private CobranzaDAO cobranzaDAO;
@@ -178,7 +179,8 @@ public class Cobranzas extends Activity {
             "3. TRANSFERENCIA A FAMILY",
             "4. TRANSFERENCIA A TERCEROS",
             "5. E-CHEQ A FAMILY",
-            "6. E-CHEQ A TERCEROS"
+            "6. E-CHEQ A TERCEROS",
+            "7. TRANSFERENCIA A MARCOS"
         };
         // Pre-seleccionado con el valor actual: Android no dispara el listener de
         // setSingleChoiceItems para el ítem ya tildado al abrir, así que arranca
