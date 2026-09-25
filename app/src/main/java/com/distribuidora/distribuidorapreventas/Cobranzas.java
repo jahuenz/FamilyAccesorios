@@ -173,24 +173,34 @@ public class Cobranzas extends Activity {
         ad.show();
     }
 
+    // Orden en el que se muestran las opciones en el diálogo (agrupa las transferencias).
+    // No corresponde al id_valor guardado en la base ni en el CSV del FTP, que
+    // mantiene su numeración original para no afectar cobros ya cargados.
+    private static final int[] ORDEN_DISPLAY = {
+        EFECTIVO, CHEQUE_FISICO,
+        TRANSFERENCIA_FAMILY, TRANSFERENCIA_TERCERO, TRANSFERENCIA_MARCOS,
+        ECHEQ_FAMILY, ECHEQ_TERCERO
+    };
+
     private void mostrarModalFormaPago() {
         final String[] opciones = {
             "1. EFECTIVO",
             "2. CHEQUE FISICO",
             "3. TRANSFERENCIA A FAMILY",
             "4. TRANSFERENCIA A TERCEROS",
-            "5. E-CHEQ A FAMILY",
-            "6. E-CHEQ A TERCEROS",
-            "7. TRANSFERENCIA A MARCOS"
+            "5. TRANSFERENCIA A MARCOS",
+            "6. E-CHEQ A FAMILY",
+            "7. E-CHEQ A TERCEROS"
         };
+        int indiceActual = indexOfOrdenDisplay(idValorSeleccionado);
         // Pre-seleccionado con el valor actual: Android no dispara el listener de
         // setSingleChoiceItems para el ítem ya tildado al abrir, así que arranca
         // asumiendo que el usuario mantiene esa opción si toca "Aceptar" directo.
-        final int[] seleccion = {idValorSeleccionado - 1};
+        final int[] seleccion = {indiceActual};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Seleccione forma de pago");
-        builder.setSingleChoiceItems(opciones, idValorSeleccionado - 1, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(opciones, indiceActual, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 seleccion[0] = which;
@@ -203,8 +213,8 @@ public class Cobranzas extends Activity {
                     Toast.makeText(Cobranzas.this, "Debe seleccionar una opción", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                idValorSeleccionado = seleccion[0] + 1;
-                spnFormaPago.setSelection(seleccion[0]);
+                idValorSeleccionado = ORDEN_DISPLAY[seleccion[0]];
+                spnFormaPago.setSelection(idValorSeleccionado - 1);
                 actualizarCamposDinamicos(idValorSeleccionado);
                 limpiarCamposDinamicos();
                 dialog.dismiss();
@@ -212,6 +222,13 @@ public class Cobranzas extends Activity {
         });
         builder.setCancelable(false);
         builder.show();
+    }
+
+    private int indexOfOrdenDisplay(int idValor) {
+        for (int i = 0; i < ORDEN_DISPLAY.length; i++) {
+            if (ORDEN_DISPLAY[i] == idValor) return i;
+        }
+        return 0;
     }
 
     private void actualizarCamposDinamicos(int idValor) {
