@@ -11,4 +11,9 @@ public class FormatoUtils {
     public static String formatoImporte(double numero) {
         return new BigDecimal(numero).setScale(2, RoundingMode.HALF_UP).toPlainString();
     }
+
+    /** Igual que formatoImporte pero sin decimales, para el monto total del comprobante. */
+    public static String formatoImporteSinDecimales(double numero) {
+        return new BigDecimal(numero).setScale(0, RoundingMode.HALF_UP).toPlainString();
+    }
 }

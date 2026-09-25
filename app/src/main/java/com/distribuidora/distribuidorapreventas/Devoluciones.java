@@ -52,6 +52,9 @@ import com.distribuidora.utils.ComprobanteStorage;
 import com.distribuidora.utils.Preferencias;
 import com.distribuidora.utils.VentanaDialogo;
 
+import static com.distribuidora.utils.FormatoUtils.formatoImporte;
+import static com.distribuidora.utils.FormatoUtils.formatoImporteSinDecimales;
+
 public class Devoluciones extends Activity {
 
 	int idCliente;
@@ -351,7 +354,7 @@ public class Devoluciones extends Activity {
 		Bitmap bmp = Bitmap.createBitmap(src.getWidth(), src.getHeight(), conf); // this creates a MUTABLE bitmap
 		
 		String clienteString = "Cliente: "+cliente.getRazonSocial();
-		String montoVenta= "Monto total: $"+ cabecera.getTotal();
+		String montoVenta= "Monto total: $"+ formatoImporteSinDecimales(cabecera.getTotal());
 		String fecha = "Fecha: "+ cabecera.getFecha("dd/MM/yyyy");
 		String condicionVta = "Condición venta: -";
 		String divisor = "-----------------------------------------------------------------------------------------------------------";
@@ -401,7 +404,7 @@ public class Devoluciones extends Activity {
 	    i = i + 10f;
 	    
 	    cs.drawText("TOTAL", x_coord, getSizeInPx(height+i), tPaint);
-	    cs.drawText("$" + cabecera.getTotal(), getSizeInPx(275.0f), getSizeInPx(height+i), tPaint);
+	    cs.drawText("$" + formatoImporteSinDecimales(cabecera.getTotal()), getSizeInPx(275.0f), getSizeInPx(height+i), tPaint);
 	    
 	    String nombreArchivo = cliente.getRazonSocial()+"-"+cabecera.getFecha("dd-MM-yyyy_HHmm")+".jpg";
 	    Uri photoURI;

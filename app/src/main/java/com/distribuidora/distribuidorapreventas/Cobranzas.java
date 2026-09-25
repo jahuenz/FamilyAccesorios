@@ -44,17 +44,19 @@ import com.distribuidora.utils.Preferencias;
 import com.distribuidora.utils.VentanaDialogo;
 
 import static com.distribuidora.utils.FormatoUtils.formatoImporte;
+import static com.distribuidora.utils.FormatoUtils.formatoImporteSinDecimales;
 
 public class Cobranzas extends Activity {
 
     // id_valor: 1=Efectivo, 2=Cheque físico, 3=Transferencia Family,
-    //           4=Transferencia Tercero, 5=eCheq Family, 6=eCheq Terceros
+    //           4=Transferencia Tercero, 5=eCheq Family, 6=eCheq Terceros, 7=Transferencia Marcos
     private static final int EFECTIVO             = 1;
     private static final int CHEQUE_FISICO        = 2;
     private static final int TRANSFERENCIA_FAMILY = 3;
     private static final int TRANSFERENCIA_TERCERO = 4;
     private static final int ECHEQ_FAMILY         = 5;
     private static final int ECHEQ_TERCERO        = 6;
+    private static final int TRANSFERENCIA_MARCOS = 7;
 
     private ClienteDAO clienteDAO;
     private CobranzaDAO cobranzaDAO;
@@ -171,23 +173,34 @@ public class Cobranzas extends Activity {
         ad.show();
     }
 
+    // Orden en el que se muestran las opciones en el diálogo (agrupa las transferencias).
+    // No corresponde al id_valor guardado en la base ni en el CSV del FTP, que
+    // mantiene su numeración original para no afectar cobros ya cargados.
+    private static final int[] ORDEN_DISPLAY = {
+        EFECTIVO, CHEQUE_FISICO,
+        TRANSFERENCIA_FAMILY, TRANSFERENCIA_TERCERO, TRANSFERENCIA_MARCOS,
+        ECHEQ_FAMILY, ECHEQ_TERCERO
+    };
+
     private void mostrarModalFormaPago() {
         final String[] opciones = {
             "1. EFECTIVO",
             "2. CHEQUE FISICO",
             "3. TRANSFERENCIA A FAMILY",
             "4. TRANSFERENCIA A TERCEROS",
-            "5. E-CHEQ A FAMILY",
-            "6. E-CHEQ A TERCEROS"
+            "5. TRANSFERENCIA A MARCOS",
+            "6. E-CHEQ A FAMILY",
+            "7. E-CHEQ A TERCEROS"
         };
+        int indiceActual = indexOfOrdenDisplay(idValorSeleccionado);
         // Pre-seleccionado con el valor actual: Android no dispara el listener de
         // setSingleChoiceItems para el ítem ya tildado al abrir, así que arranca
         // asumiendo que el usuario mantiene esa opción si toca "Aceptar" directo.
-        final int[] seleccion = {idValorSeleccionado - 1};
+        final int[] seleccion = {indiceActual};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Seleccione forma de pago");
-        builder.setSingleChoiceItems(opciones, idValorSeleccionado - 1, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(opciones, indiceActual, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 seleccion[0] = which;
@@ -200,8 +213,8 @@ public class Cobranzas extends Activity {
                     Toast.makeText(Cobranzas.this, "Debe seleccionar una opción", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                idValorSeleccionado = seleccion[0] + 1;
-                spnFormaPago.setSelection(seleccion[0]);
+                idValorSeleccionado = ORDEN_DISPLAY[seleccion[0]];
+                spnFormaPago.setSelection(idValorSeleccionado - 1);
                 actualizarCamposDinamicos(idValorSeleccionado);
                 limpiarCamposDinamicos();
                 dialog.dismiss();
@@ -209,6 +222,13 @@ public class Cobranzas extends Activity {
         });
         builder.setCancelable(false);
         builder.show();
+    }
+
+    private int indexOfOrdenDisplay(int idValor) {
+        for (int i = 0; i < ORDEN_DISPLAY.length; i++) {
+            if (ORDEN_DISPLAY[i] == idValor) return i;
+        }
+        return 0;
     }
 
     private void actualizarCamposDinamicos(int idValor) {
@@ -312,7 +332,7 @@ public class Cobranzas extends Activity {
 
         String numComprobante = "Num. Comprobante: " + cobro.getId();
         String clienteStr     = "Cliente: " + cliente.getRazonSocial();
-        String montoVenta     = "Monto total: $" + cobro.getImporte();
+        String montoVenta     = "Monto total: $" + formatoImporteSinDecimales(cobro.getImporte());
         String fecha          = "Fecha: " + cobro.getFecha("dd/MM/yyyy");
         String formaPagoStr   = "Forma de pago: " + spnFormaPago.getSelectedItem().toString();
         String divisor        = "-----------------------------------------------------------------------------------------------------------";
@@ -356,7 +376,7 @@ public class Cobranzas extends Activity {
         y += 15f;
 
         cs.drawText("TOTAL", x_coord, getSizeInPx(height + y), tPaint);
-        cs.drawText("$" + cobro.getImporte(), getSizeInPx(275.0f), getSizeInPx(height + y), tPaint);
+        cs.drawText("$" + formatoImporteSinDecimales(cobro.getImporte()), getSizeInPx(275.0f), getSizeInPx(height + y), tPaint);
 
         String nombreArchivo = cliente.getRazonSocial() + "-" + cobro.getFecha("dd-MM-yyyy_HHmm") + ".jpg";
         Uri photoURI;
