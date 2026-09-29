@@ -85,11 +85,6 @@ public class ClientesTodos extends Activity {
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		getMenuInflater().inflate(R.menu.menu_contextual_clientes, menu);
-
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-		if (clientesTodosAdapter.getItemSaldoCtaCte(info.position) <= 0) {
-			menu.getItem(0).setEnabled(false);
-		}
 	}
 
 	public boolean onContextItemSelected(MenuItem item) {
