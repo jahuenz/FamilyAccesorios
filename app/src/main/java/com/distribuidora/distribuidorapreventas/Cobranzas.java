@@ -178,7 +178,7 @@ public class Cobranzas extends Activity {
     // mantiene su numeración original para no afectar cobros ya cargados.
     private static final int[] ORDEN_DISPLAY = {
         EFECTIVO, CHEQUE_FISICO,
-        TRANSFERENCIA_FAMILY, TRANSFERENCIA_TERCERO, TRANSFERENCIA_MARCOS,
+        TRANSFERENCIA_FAMILY, TRANSFERENCIA_MARCOS, TRANSFERENCIA_TERCERO,
         ECHEQ_FAMILY, ECHEQ_TERCERO
     };
 
@@ -187,8 +187,8 @@ public class Cobranzas extends Activity {
             "1. EFECTIVO",
             "2. CHEQUE FISICO",
             "3. TRANSFERENCIA A FAMILY",
-            "4. TRANSFERENCIA A TERCEROS",
-            "5. TRANSFERENCIA A MARCOS",
+            "4. TRANSFERENCIA A MARCOS",
+            "5. TRANSFERENCIA A TERCEROS",
             "6. E-CHEQ A FAMILY",
             "7. E-CHEQ A TERCEROS"
         };
