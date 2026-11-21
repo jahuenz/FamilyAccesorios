@@ -546,7 +546,6 @@ public class PedidoCabecera extends Activity {
 		String montoVenta= "Monto total: $"+ formatoImporteSinDecimales(cabecera.getTotal());
 		String fecha = "Fecha: "+ cabeceraPedido.getFecha("dd/MM/yyyy");
 		String condicionVta = "Condición venta: "+ spn_cond_venta.getSelectedItem().toString();
-		String divisor = "-----------------------------------------------------------------------------------------------------------";
 		String tipoMoviento = "Tipo de pedido: "+ spn_tipo_pedido.getSelectedItem().toString();
 		
 		Canvas cs = new Canvas(bmp);
@@ -575,10 +574,13 @@ public class PedidoCabecera extends Activity {
 	    }
 	    cs.drawText(tipoMoviento, x_coord, getSizeInPx(height+90f), tPaint);
 	    
-	    cs.drawText("", x_coord, getSizeInPx(height+95f), tPaint);
-	    cs.drawText(divisor, x_coord, getSizeInPx(height+100f), tPaint);
-	    cs.drawText("", x_coord, getSizeInPx(height+105f), tPaint);
 	    float i = 110f;
+	    
+	    StringBuilder dashes = new StringBuilder("-");
+	    while(tPaint.measureText(dashes.toString()) < bmp.getWidth()){
+	    	dashes.append("-");
+	    }
+	    String divisorCompleto = dashes.toString();
 	    
 	    float rightEdge = bmp.getWidth() - getSizeInPx(10f);
 	    float gap = getSizeInPx(8f);
@@ -606,6 +608,8 @@ public class PedidoCabecera extends Activity {
 	    cs.drawText(hPrecio, precioRight - tPaint.measureText(hPrecio), getSizeInPx(height+i), tPaint);
 	    cs.drawText(hCantidad, cantRight - tPaint.measureText(hCantidad), getSizeInPx(height+i), tPaint);
 	    i = i + 10f;
+	    cs.drawText(divisorCompleto, 0f, getSizeInPx(height+i), tPaint);
+	    i = i + 10f;
 	    
 	    for(DetallePedido detalle : detalles_Pedido){
 	    	String descripcion = detalle.getDescripcion();
@@ -621,19 +625,14 @@ public class PedidoCabecera extends Activity {
 	    	i = i + 10f;
 	    }
 	    
-	    cs.drawText("", x_coord, getSizeInPx(height+i), tPaint);
-	    cs.drawText(divisor, x_coord, getSizeInPx(height+i), tPaint);
-	    cs.drawText("", x_coord, getSizeInPx(height+i), tPaint);
+	    cs.drawText(divisorCompleto, 0f, getSizeInPx(height+i), tPaint);
 	    i = i + 10f;
 	    
 	    String totalStr = "$" + formatoImporteSinDecimales(cabecera.getTotal());
-	    cs.drawText("TOTAL", x_coord, getSizeInPx(height+i), tPaint);
-	    cs.drawText(totalStr, rightEdge - tPaint.measureText(totalStr), getSizeInPx(height+i), tPaint);
-	    i = i + 10f;
-	    
 	    String totalCantStr = String.valueOf(totalCantidad);
-	    cs.drawText("CANTIDAD TOTAL", x_coord, getSizeInPx(height+i), tPaint);
-	    cs.drawText(totalCantStr, rightEdge - tPaint.measureText(totalCantStr), getSizeInPx(height+i), tPaint);
+	    cs.drawText("TOTAL", x_coord, getSizeInPx(height+i), tPaint);
+	    cs.drawText(totalStr, precioRight - tPaint.measureText(totalStr), getSizeInPx(height+i), tPaint);
+	    cs.drawText(totalCantStr, cantRight - tPaint.measureText(totalCantStr), getSizeInPx(height+i), tPaint);
 	    
 	    String nombreArchivo = cliente.getRazonSocial()+"-"+cabeceraPedido.getFecha("dd-MM-yyyy_HHmm")+".jpg";
 	    Uri photoURI;
