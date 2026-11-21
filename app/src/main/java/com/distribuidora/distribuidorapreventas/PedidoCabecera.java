@@ -60,7 +60,7 @@ import com.distribuidora.utils.Preferencias;
 import com.distribuidora.utils.VentanaDialogo;
 
 import static com.distribuidora.utils.FormatoUtils.formatoImporte;
-import static com.distribuidora.utils.FormatoUtils.formatoImporteSinDecimales;
+import static com.distribuidora.utils.FormatoUtils.formatoImporteConMiles;
 
 public class PedidoCabecera extends Activity {
 
@@ -543,10 +543,9 @@ public class PedidoCabecera extends Activity {
 		
 		String numComprobante = "Num. Comprobate: "+cabecera.getId();
 		String clienteString = "Cliente: "+cliente.getRazonSocial();
-		String montoVenta= "Monto total: $"+ formatoImporteSinDecimales(cabecera.getTotal());
+		String montoVenta= "Monto total: $"+ formatoImporteConMiles(cabecera.getTotal());
 		String fecha = "Fecha: "+ cabeceraPedido.getFecha("dd/MM/yyyy");
 		String condicionVta = "Condición venta: "+ spn_cond_venta.getSelectedItem().toString();
-		String divisor = "-----------------------------------------------------------------------------------------------------------";
 		String tipoMoviento = "Tipo de pedido: "+ spn_tipo_pedido.getSelectedItem().toString();
 		
 		Canvas cs = new Canvas(bmp);
@@ -575,30 +574,65 @@ public class PedidoCabecera extends Activity {
 	    }
 	    cs.drawText(tipoMoviento, x_coord, getSizeInPx(height+90f), tPaint);
 	    
-	    cs.drawText("", x_coord, getSizeInPx(height+95f), tPaint);
-	    cs.drawText(divisor, x_coord, getSizeInPx(height+100f), tPaint);
-	    cs.drawText("", x_coord, getSizeInPx(height+105f), tPaint);
 	    float i = 110f;
 	    
-	    for(DetallePedido detalle : detalles_Pedido){
-	    	if(detalle.getDescripcion().length() <= 35){
-	    		cs.drawText(detalle.getDescripcion(), x_coord, getSizeInPx(height+i), tPaint);
-	    	}else{
-	    		cs.drawText(detalle.getDescripcion().substring(0, 35), x_coord, getSizeInPx(height+i), tPaint);
-	    	}
-		    cs.drawText("$"+detalle.getPrecioUnitario(), getSizeInPx(210.0f), getSizeInPx(height+i), tPaint);
-		    cs.drawText("("+detalle.getCantidad()+")", getSizeInPx(257.5f), getSizeInPx(height+i), tPaint);
-		    cs.drawText("$"+detalle.getPrecioConDescuento() + "", getSizeInPx(275.0f), getSizeInPx(height+i), tPaint);
-		    i = i + 10f;
+	    StringBuilder dashes = new StringBuilder("-");
+	    while(tPaint.measureText(dashes.toString()) < bmp.getWidth()){
+	    	dashes.append("-");
 	    }
+	    String divisorCompleto = dashes.toString();
 	    
-	    cs.drawText("", x_coord, getSizeInPx(height+i), tPaint);
-	    cs.drawText(divisor, x_coord, getSizeInPx(height+i), tPaint);
-	    cs.drawText("", x_coord, getSizeInPx(height+i), tPaint);
+	    float rightEdge = bmp.getWidth() - getSizeInPx(10f);
+	    float gap = getSizeInPx(8f);
+	    String hCodigo = "CÓD";
+	    String hDescripcion = "DESCRIPCIÓN";
+	    String hPrecio = "P.UNIT";
+	    String hCantidad = "CANT";
+	    float codW = tPaint.measureText(hCodigo);
+	    float precioW = tPaint.measureText(hPrecio);
+	    float cantW = tPaint.measureText(hCantidad);
+	    int totalCantidad = 0;
+	    for(DetallePedido detalle : detalles_Pedido){
+	    	codW = Math.max(codW, tPaint.measureText(detalle.getIdProducto()));
+	    	precioW = Math.max(precioW, tPaint.measureText("$" + formatoImporteConMiles(detalle.getPrecioUnitario())));
+	    	cantW = Math.max(cantW, tPaint.measureText(String.valueOf(detalle.getCantidad())));
+	    	totalCantidad += detalle.getCantidad();
+	    }
+	    float cantRight = rightEdge;
+	    float precioRight = rightEdge - cantW - gap;
+	    float descX = x_coord + codW + gap;
+	    float descMaxW = precioRight - precioW - gap - descX;
+	    
+	    cs.drawText(hCodigo, x_coord, getSizeInPx(height+i), tPaint);
+	    cs.drawText(hDescripcion, descX, getSizeInPx(height+i), tPaint);
+	    cs.drawText(hPrecio, precioRight - tPaint.measureText(hPrecio), getSizeInPx(height+i), tPaint);
+	    cs.drawText(hCantidad, cantRight - tPaint.measureText(hCantidad), getSizeInPx(height+i), tPaint);
+	    i = i + 10f;
+	    cs.drawText(divisorCompleto, 0f, getSizeInPx(height+i), tPaint);
 	    i = i + 10f;
 	    
+	    for(DetallePedido detalle : detalles_Pedido){
+	    	String descripcion = detalle.getDescripcion();
+	    	while(descripcion.length() > 0 && tPaint.measureText(descripcion) > descMaxW){
+	    		descripcion = descripcion.substring(0, descripcion.length() - 1);
+	    	}
+	    	String precio = "$" + formatoImporteConMiles(detalle.getPrecioUnitario());
+	    	String cantidad = String.valueOf(detalle.getCantidad());
+	    	cs.drawText(detalle.getIdProducto(), x_coord, getSizeInPx(height+i), tPaint);
+	    	cs.drawText(descripcion, descX, getSizeInPx(height+i), tPaint);
+	    	cs.drawText(precio, precioRight - tPaint.measureText(precio), getSizeInPx(height+i), tPaint);
+	    	cs.drawText(cantidad, cantRight - tPaint.measureText(cantidad), getSizeInPx(height+i), tPaint);
+	    	i = i + 10f;
+	    }
+	    
+	    cs.drawText(divisorCompleto, 0f, getSizeInPx(height+i), tPaint);
+	    i = i + 10f;
+	    
+	    String totalStr = "$" + formatoImporteConMiles(cabecera.getTotal());
+	    String totalCantStr = String.valueOf(totalCantidad);
 	    cs.drawText("TOTAL", x_coord, getSizeInPx(height+i), tPaint);
-	    cs.drawText("$" + formatoImporteSinDecimales(cabecera.getTotal()), getSizeInPx(275.0f), getSizeInPx(height+i), tPaint);
+	    cs.drawText(totalStr, precioRight - tPaint.measureText(totalStr), getSizeInPx(height+i), tPaint);
+	    cs.drawText(totalCantStr, cantRight - tPaint.measureText(totalCantStr), getSizeInPx(height+i), tPaint);
 	    
 	    String nombreArchivo = cliente.getRazonSocial()+"-"+cabeceraPedido.getFecha("dd-MM-yyyy_HHmm")+".jpg";
 	    Uri photoURI;
