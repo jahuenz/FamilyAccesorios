@@ -60,7 +60,7 @@ import com.distribuidora.utils.Preferencias;
 import com.distribuidora.utils.VentanaDialogo;
 
 import static com.distribuidora.utils.FormatoUtils.formatoImporte;
-import static com.distribuidora.utils.FormatoUtils.formatoImporteSinDecimales;
+import static com.distribuidora.utils.FormatoUtils.formatoImporteConMiles;
 
 public class PedidoCabecera extends Activity {
 
@@ -543,7 +543,7 @@ public class PedidoCabecera extends Activity {
 		
 		String numComprobante = "Num. Comprobate: "+cabecera.getId();
 		String clienteString = "Cliente: "+cliente.getRazonSocial();
-		String montoVenta= "Monto total: $"+ formatoImporteSinDecimales(cabecera.getTotal());
+		String montoVenta= "Monto total: $"+ formatoImporteConMiles(cabecera.getTotal());
 		String fecha = "Fecha: "+ cabeceraPedido.getFecha("dd/MM/yyyy");
 		String condicionVta = "Condición venta: "+ spn_cond_venta.getSelectedItem().toString();
 		String tipoMoviento = "Tipo de pedido: "+ spn_tipo_pedido.getSelectedItem().toString();
@@ -594,7 +594,7 @@ public class PedidoCabecera extends Activity {
 	    int totalCantidad = 0;
 	    for(DetallePedido detalle : detalles_Pedido){
 	    	codW = Math.max(codW, tPaint.measureText(detalle.getIdProducto()));
-	    	precioW = Math.max(precioW, tPaint.measureText("$" + formatoImporteSinDecimales(detalle.getPrecioUnitario())));
+	    	precioW = Math.max(precioW, tPaint.measureText("$" + formatoImporteConMiles(detalle.getPrecioUnitario())));
 	    	cantW = Math.max(cantW, tPaint.measureText(String.valueOf(detalle.getCantidad())));
 	    	totalCantidad += detalle.getCantidad();
 	    }
@@ -616,7 +616,7 @@ public class PedidoCabecera extends Activity {
 	    	while(descripcion.length() > 0 && tPaint.measureText(descripcion) > descMaxW){
 	    		descripcion = descripcion.substring(0, descripcion.length() - 1);
 	    	}
-	    	String precio = "$" + formatoImporteSinDecimales(detalle.getPrecioUnitario());
+	    	String precio = "$" + formatoImporteConMiles(detalle.getPrecioUnitario());
 	    	String cantidad = String.valueOf(detalle.getCantidad());
 	    	cs.drawText(detalle.getIdProducto(), x_coord, getSizeInPx(height+i), tPaint);
 	    	cs.drawText(descripcion, descX, getSizeInPx(height+i), tPaint);
@@ -628,7 +628,7 @@ public class PedidoCabecera extends Activity {
 	    cs.drawText(divisorCompleto, 0f, getSizeInPx(height+i), tPaint);
 	    i = i + 10f;
 	    
-	    String totalStr = "$" + formatoImporteSinDecimales(cabecera.getTotal());
+	    String totalStr = "$" + formatoImporteConMiles(cabecera.getTotal());
 	    String totalCantStr = String.valueOf(totalCantidad);
 	    cs.drawText("TOTAL", x_coord, getSizeInPx(height+i), tPaint);
 	    cs.drawText(totalStr, precioRight - tPaint.measureText(totalStr), getSizeInPx(height+i), tPaint);
